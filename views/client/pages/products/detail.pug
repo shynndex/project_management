@@ -1,0 +1,39 @@
+extends ../../layouts/defaults.pug
+
+block content
+    .container.my-3 
+        .row 
+            .col-12
+                .container-fluid
+
+        if product.title
+            h1.product-detail-title #{product.title}
+
+        if product.price
+            .product-detail-item 
+                | Giá: 
+                b #{product.price}$
+
+        if product.discountPercentage
+            .product-detail-item 
+                | Giảm giá: 
+                b #{product.discountPercentage}%
+
+        if product.stock
+            .product-detail-item 
+                | Còn lại: 
+                b #{product.stock}
+
+        if product.thumbnail
+            .product-detail-item 
+                img.product-thumbnail(src=product.thumbnail, alt="thumbnail" )
+                
+        if product.position
+            .product-detail-item 
+                | Vị trí: 
+                b #{product.position}
+
+        if product.description
+            .product-detail-item 
+                | Mô tả: 
+                b #{product.description}

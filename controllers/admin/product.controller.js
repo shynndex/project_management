@@ -1,0 +1,240 @@
+const Product = require("../../models/product.model");
+const filterStatusHelper = require("../../helpers/filterStatus");
+const searchHelper = require("../../helpers/search");
+const paginationHelper = require("../../helpers/pagination");
+const systemConfix = require("../../config/system");
+
+//[GET] /admin/products
+module.exports.product = async (req, res) => {
+  //tạo object để render ra giao diện cho trường hợp có nhiều trạng thái khác
+  // console.log(req.query.);
+
+  const filterStatus = filterStatusHelper(req.query);
+
+  let find = {
+    deleted: false,
+  };
+
+  //sửa key trạng thái hoạt động,nếu phát hiện request trên url có status thì lọc
+  if (req.query.status === "deleted") {
+    find.deleted = true;
+  } else {
+    find.deleted = false;
+    if (req.query.status) {
+      find.status = req.query.status;
+    }
+  }
+
+  const objectSearch = searchHelper(req.query);
+
+  //kiểm tra nếu có regex được truyền vào
+  if (objectSearch.regex) {
+    find.title = objectSearch.regex;
+  }
+
+  //Pagination
+  const countProducts = await Product.countDocuments(find);
+  let objectPagination = paginationHelper(
+    {
+      currentPage: 1,
+      limitItem: 5,
+    },
+    req.query,
+    countProducts
+  );
+  //End Pagination
+
+  const products = await Product.find(find)
+    .sort({ position: "desc" })
+    .limit(objectPagination.limitItem)
+    .skip(objectPagination.skip);
+
+  res.render("admin/pages/products/index", {
+    title: "Danh sách sản phẩm",
+    products: products,
+    filterStatus: filterStatus,
+    keyword: objectSearch.keyword,
+    pagination: objectPagination,
+  });
+};
+
+//[PATCH] /admin/products/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+  const status = req.params.status;
+  const id = req.params.id;
+
+  await Product.updateOne({ _id: id }, { status: status });
+
+  req.flash("success", "Cập nhật trạng thái thành công !");
+  res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
+};
+
+//[PATCH] /admin/products/change-multi
+module.exports.changeMulti = async (req, res) => {
+  const type = req.body.type;
+  //lặp qua từng phần tử trong mảng:
+  const ids = req.body.ids.split(", "); //.map(item=>item.trim())
+
+  switch (type) {
+    case "active":
+      await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+      req.flash(
+        "success",
+        `Cập nhật trạng thái của ${ids.length} sản phẩm thành công !`
+      );
+      break;
+
+    case "inactive":
+      await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      req.flash(
+        "success",
+        `Cập nhật trạng thái của ${ids.length} sản phẩm  thành công !`
+      );
+      break;
+
+    case "deleted-all":
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        {
+          deleted: true,
+          deletedAt: new Date(),
+        }
+      );
+      req.flash("success", `Đã xóa sản phẩm  ${ids.length} thành công !`);
+
+      break;
+
+    case "change-position":
+      for (const item of ids) {
+        let [id, position] = item.split("-").map((item) => item.trim());
+        position = parseInt(position);
+        await Product.updateOne({ _id: id }, { position: position });
+        req.flash(
+          "success",
+          `Thay đổi vị trí của sản phẩm  ${ids.length} thành công !`
+        );
+      }
+      break;
+    default:
+      break;
+  }
+
+  res.redirect(req.get("Referer") || "/admin/products");
+};
+
+//[DELETE] /admin/products/delete/:id
+module.exports.deleteProduct = async (req, res) => {
+  const id = req.params.id;
+
+  await Product.updateOne(
+    { _id: id },
+    {
+      deleted: true,
+      deletedAt: new Date(),
+    }
+  );
+
+  req.flash("success", `Đã xóa sản phẩm ${id.length} thành công !`);
+
+  res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
+};
+
+//[GET] /admin/products/create
+module.exports.create = async (req, res) => {
+  res.render("admin/pages/products/create", {
+    title: "Thêm mới sản phẩm",
+  });
+};
+
+//[POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+
+  if (req.body.position == "") {
+    const countProducts = await Product.countDocuments();
+    req.body.position = countProducts + 1;
+  } else {
+    req.body.position = parseInt(req.body.position);
+  }
+
+  if (req.file) {
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  }
+
+  try{
+    const product = new Product(req.body);
+    product.save();
+    req.flash("success", "Thêm sản phẩm thành công!");
+    res.redirect(`${systemConfix.prefixAdmin}/products`);
+  }
+  
+  catch (error) {
+    req.flash("error", "Đã xảy ra lỗi khi thêm sản phẩm!");
+    res.redirect(`${systemConfix.prefixAdmin}/products`);
+  }
+};
+
+//[GET] /admin/products/edit
+module.exports.edit = async (req, res) => {
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id,
+    };
+
+    const product = await Product.findOne(find);
+
+    res.render("admin/pages/products/edit", {
+      title: "Chỉnh sửa sản phẩm",
+      product: product,
+    });
+  } catch (error) {
+    req.flash("error", "Đã xảy ra lỗi khi tìm sản phẩm!");
+    res.redirect(`${systemConfix.prefixAdmin}/products`);
+  }
+};
+
+module.exports.editPatch = async (req, res) => {
+  const id=req.params.id;
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+  req.body.position = parseInt(req.body.position);
+
+
+  if (req.file) {
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  }
+
+  try {
+    await Product.updateOne({_id:id},req.body );
+   req.flash("success", `Đã cập nhật sản phẩm ${req.body.position} thành công !`);
+
+  } catch (error) {
+    req.flash("error","Có lỗi xảy ra,vui lòng thử lại")
+  }
+
+  res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
+};
+
+//[GET] /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id,
+    };
+
+    const product = await Product.findOne(find);
+
+    res.render("admin/pages/products/detail", {
+      title: product.title,
+      product: product,
+    });
+  } catch (error) {
+    req.flash("error", "Đã xảy ra lỗi khi tìm sản phẩm!");
+    res.redirect(`${systemConfix.prefixAdmin}/products`);
+  }
+};
