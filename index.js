@@ -2,6 +2,8 @@ require('dotenv').config(); // Load biến môi trường từ file .env
 
 const express = require("express");
 
+const path = require('path');
+
 const database=require("./config/database")
 
 const systemConfix=require('./config/system')
@@ -36,6 +38,11 @@ app.use(cookieParser('da shyzzz'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 //End Flash
+
+//TinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+//End TinyMCE
+
 
 //App local variable (Đặt tên là prefixAdmin)
 app.locals.prefixAdmin = systemConfix.prefixAdmin;

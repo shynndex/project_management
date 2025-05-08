@@ -34,8 +34,9 @@ block content
                 b #{product.position}
 
         if(product.description)
-            div(class="product-detail-item") Mô tả: 
-                b #{product.description}
+            div(class="product-detail-item") 
+            | Mô tả:
+            != product.description
         a(
             href=`${prefixAdmin}/products/edit/${product.id}`
             class="btn btn-warning"
