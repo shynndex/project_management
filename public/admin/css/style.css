@@ -53,6 +53,10 @@
     border-bottom: 1px solid #515151;
 }
 
+.sider .inner-menu ul li a:hover{
+    text-decoration:underline;
+}
+
 /*End sider */
 
 /* Show Alert */
