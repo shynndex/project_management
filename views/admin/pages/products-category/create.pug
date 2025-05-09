@@ -1,54 +1,43 @@
 extends ../../layouts/defaults.pug
 include ../../mixins/alert.pug
 
-block content
-    +alert-error(5000)
-    h1(class="mb-4") Thêm mới sản phẩm
-
-    form(action=`${prefixAdmin}/products/create` id="form-create-product" method="POST" enctype="multipart/form-data")
+block content 
+    h1(class="mb-4") Thêm mới danh mục sản phẩm 
     
+    form(
+        action=`${prefixAdmin}/products-category/create`
+        method="POST"
+        enctype="multipart/form-data"
+    )
         div(class="mb-3")
             label(for="title") Tiêu đề
             input(type="text", name="title" id="title" class="form-control" required)
 
         div(class="mb-3")
+            label(for="parent_id") Danh mục cha
+            input(type="text", name="parent_id" id="parent_id" class="form-control")
+
+        div(class="mb-3") 
             label(for="desc") Mô tả
-            textarea(name="description" class="form-control textarea-mce" id="desc" rows="5")
-
-        div(class="mb-3")
-            label(for="price") Giá ($)
-            input(type="number" name="price" class="form-control" id="price" value="0" min="0")
-
-        div(class="mb-3")
-            label(for="discount") Giảm giá (%)
-            input(type="number" name="discountPercentage" class="form-control" id="discount" value="0" min="0")
-
-        div(class="mb-3")
-            label(for="stock") Số lượng
-            input(type="number" name="stock" class="form-control" id="stock" value="0" min="0")
-
+            textarea(type="text", name="description" id="desc" class="form-control textarea-mce")
+        
         div(class="mb-3" upload-image)
             label(for="thumbnail") Ảnh
             input(type="file" name="thumbnail" class="form-control" id="thumbnail" accept="image/*" upload-image-input)
             img(src="" upload-image-preview class="img-preview")
             span(remove-image-btn class="d-none") x 
-
+            
         div(class="mb-3")
             label(for="position") Vị trí
             input(type="number" name="position" class="form-control" id="position" placeholder="Tự động tăng" min="1")
 
-        div(class="form-check form-check-inline")
+        div(class="mb-3 form-check form-check-inline")
             input(type="radio" name="status" class="form-check-input" id="statusActive" value="active" checked)
             label(for="statusActive" class="form-check-label") Hoạt động 
 
-        div(class="form-check form-check-inline")
+        div(class="mb-3 form-check form-check-inline")
             input(type="radio" name="status" class="form-check-input" id="statusInActive" value="inactive")
             label(for="statusInActive" class="form-check-label") Dừng Hoạt động 
 
-        div(class="mt-3")
+        div(class="mb-3")
             button(type="submit" class="btn btn-primary") Tạo mới
-
-
-
-
-
