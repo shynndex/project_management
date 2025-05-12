@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 // const storageMulter=require("../../helpers/storageMulter")
-const upload = multer();
+const upload = multer({
+  limits: {
+    fieldSize: 10 * 1024 * 1024, 
+    fileSize: 5 * 1024 * 1024    
+  }
+});
 const controller = require("../../controllers/admin/product.controller");
 const validate = require("../../validate/admin/product.validate");
 

@@ -79,3 +79,23 @@ module.exports.createPost = async (req, res) => {
     res.redirect(`${systemConfix.prefixAdmin}/products-category`);
   }
 };
+
+//[GET] /admin/products-category/edit
+module.exports.edit = async (req, res) => {
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id,
+    };
+
+    const productCategory = await ProductCategory.findOne(find);
+
+    res.render("admin/pages/products-category/edit", {
+      title: "Chỉnh sửa danh mục",
+      productCategory: productCategory,
+    });
+  } catch (error) {
+    req.flash("error", "Đã xảy ra lỗi khi tìm sản phẩm!");
+    res.redirect(`${systemConfix.prefixAdmin}/products`);
+  }
+};
