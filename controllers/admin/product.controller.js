@@ -10,7 +10,7 @@ module.exports.product = async (req, res) => {
   // console.log(req.query.);
 
   const filterStatus = filterStatusHelper(req.query);
-
+  
   let find = {
     deleted: false,
   };

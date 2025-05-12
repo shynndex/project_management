@@ -1,9 +1,11 @@
 extends ../../layouts/defaults.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
 
 block content 
     h1(class="mb-4") Thêm mới danh mục sản phẩm 
-    
+
     form(
         action=`${prefixAdmin}/products-category/create`
         method="POST"
@@ -15,7 +17,11 @@ block content
 
         div(class="mb-3")
             label(for="parent_id") Danh mục cha
-            input(type="text", name="parent_id" id="parent_id" class="form-control")
+        //-     input(type="text", name="parent_id" id="parent_id" class="form-control")
+        select(name="parent_id" id="parent_id" class="form-select")
+            option(value="") -- Chọn danh mục cha --
+            if(parentCategory)
+                +select-tree(parentCategory)
 
         div(class="mb-3") 
             label(for="desc") Mô tả
