@@ -90,12 +90,36 @@ module.exports.edit = async (req, res) => {
 
     const productCategory = await ProductCategory.findOne(find);
 
+    const parentCategory = await ProductCategory.find({
+      deleted:false,
+    });
+
+    const newProductCategory = createTreeHelper(parentCategory);
+
+
     res.render("admin/pages/products-category/edit", {
       title: "Chỉnh sửa danh mục",
       productCategory: productCategory,
+      parentCategory:newProductCategory,
     });
   } catch (error) {
     req.flash("error", "Đã xảy ra lỗi khi tìm sản phẩm!");
-    res.redirect(`${systemConfix.prefixAdmin}/products`);
+    res.redirect(`${systemConfix.prefixAdmin}/products-category`);
   }
+};
+
+//[PATCH] /admin/products-category/edit
+module.exports.editPatch = async (req, res) => {
+  const id=req.params.id;
+  req.body.position = parseInt(req.body.position);
+
+  try {
+    await ProductCategory.updateOne({_id:id},req.body );
+   req.flash("success", `Đã cập nhật sản phẩm ${req.body.position} thành công !`);
+
+  } catch (error) {
+    req.flash("error","Có lỗi xảy ra,vui lòng thử lại")
+  }
+
+  res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products-category`);
 };

@@ -2,7 +2,12 @@ const express = require("express");
 const multer = require("multer");
 const router = express.Router();
 
-const upload = multer();
+const upload = multer({
+  limits: {
+    fieldSize: 10 * 1024 * 1024, 
+    fileSize: 5 * 1024 * 1024    
+  }
+});
 
 const controller = require("../../controllers/admin/product-category.controller");
 const validate = require("../../validate/admin/product-category.validate");
@@ -21,5 +26,13 @@ router.post(
 );
 
 router.get("/edit/:id", controller.edit);
+
+router.patch(
+  "/edit/:id",
+  upload.single("thumbnail"),
+  uploadCloud.upload,
+  validate.createPost,
+  controller.editPatch
+);
 
 module.exports = router;

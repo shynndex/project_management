@@ -1,5 +1,6 @@
 extends ../../layouts/defaults.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block content
     +alert-success(5000)
@@ -14,10 +15,12 @@ block content
 
         div(class="mb-3")
             label(for="parent_id") Danh mục cha
-        //-     input(type="text", name="parent_id" id="parent_id" class="form-control")
-        select(name="parent_id" id="parent_id" class="form-select")
-            option(value="") -- Chọn danh mục cha --
-
+            //- input(type="text", name="parent_id" id="parent_id" class="form-control")
+            select(name="parent_id" id="parent_id" class="form-select")
+                option(value="") -- Chọn danh mục cha --
+                if(parentCategory)
+                    +select-tree(parentCategory,1 , productCategory.parent_id)
+                
         div(class="mb-3") 
             label(for="desc") Mô tả
             textarea(type="text", name="description" id="desc" class="textarea-mce form-control" value=productCategory.description)

@@ -202,6 +202,7 @@ module.exports.edit = async (req, res) => {
   }
 };
 
+//[PATCH] /admin/products/edit
 module.exports.editPatch = async (req, res) => {
   const id=req.params.id;
   req.body.price = parseInt(req.body.price);
@@ -209,10 +210,6 @@ module.exports.editPatch = async (req, res) => {
   req.body.stock = parseInt(req.body.stock);
   req.body.position = parseInt(req.body.position);
 
-
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
 
   try {
     await Product.updateOne({_id:id},req.body );
