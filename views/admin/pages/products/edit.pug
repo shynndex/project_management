@@ -1,5 +1,7 @@
 extends ../../layouts/defaults.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
 
 block content
     +alert-success(5000)
@@ -11,6 +13,13 @@ block content
         div(class="mb-3")
             label(for="title") Tiêu đề
             input(type="text", name="title" id="title" class="form-control" value=product.title required)
+
+        div(class="mb-3")
+            label(for="category_id") Danh mục 
+            select(name="category_id" id="category_id" class="form-select")
+                option(value="") -- Chọn danh mục --
+                if(category)
+                    +select-tree(category,1 ,category.parent_id)
 
         div(class="mb-3")
             label(for="desc") Mô tả

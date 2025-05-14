@@ -3,6 +3,9 @@ const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfix = require("../../config/system");
+const ProductCategory = require("../../models/product-category.model");
+const createTreeHelper = require("../../helpers/createTree");
+
 
 //[GET] /admin/products
 module.exports.product = async (req, res) => {
@@ -151,8 +154,16 @@ module.exports.deleteProduct = async (req, res) => {
 
 //[GET] /admin/products/create
 module.exports.create = async (req, res) => {
+  let find = {
+    deleted: false,
+  };
+
+  const category = await ProductCategory.find(find);
+
+  const newCategory = createTreeHelper(category);
   res.render("admin/pages/products/create", {
     title: "Thêm mới sản phẩm",
+    category: newCategory,
   });
 };
 
@@ -192,9 +203,13 @@ module.exports.edit = async (req, res) => {
 
     const product = await Product.findOne(find);
 
+    const category = await ProductCategory.find({deleted:false});
+    const newCategory = createTreeHelper(category);
+
     res.render("admin/pages/products/edit", {
       title: "Chỉnh sửa sản phẩm",
       product: product,
+      category:newCategory,
     });
   } catch (error) {
     req.flash("error", "Đã xảy ra lỗi khi tìm sản phẩm!");
