@@ -18,7 +18,7 @@ block content
         select(name="parent_id" id="parent_id" class="form-select")
             option(value="") -- Chọn danh mục cha --
             if parentCategory
-            +select-tree(parentCategory, 1, productCategory.parent_id, productCategory.id)
+            +select-tree(parentCategory, 1, productCategory.parent_id)
                 
         div(class="mb-3") 
             label(for="desc") Mô tả
