@@ -19,7 +19,7 @@ block content
             select(name="category_id" id="category_id" class="form-select")
                 option(value="") -- Chọn danh mục --
                 if(category)
-                    +select-tree(category,1 ,category.parent_id)
+                    +select-tree(category,1 ,product.category_id)
 
         div(class="mb-3")
             label(for="desc") Mô tả

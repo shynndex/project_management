@@ -7,7 +7,6 @@ block content
     +alert-error(5000)
     h1(class="mb-4") Chỉnh sửa danh mục
 
-
     form(action=`${prefixAdmin}/products-category/edit/${productCategory.id}?_method=PATCH` id="form-edit-product" method="POST" enctype="multipart/form-data")
 
         div(class="mb-3")
@@ -15,11 +14,11 @@ block content
         input(type="text", name="title" id="title" class="form-control" value=productCategory.title required)
 
         div(class="mb-3")
-            label(for="parent_id") Danh mục cha
-            select(name="parent_id" id="parent_id" class="form-select")
-                option(value="") -- Chọn danh mục cha --
-                if(parentCategory)
-                    +select-tree(parentCategory,1 , productCategory.parent_id)
+        label(for="parent_id") Danh mục cha
+        select(name="parent_id" id="parent_id" class="form-select")
+            option(value="") -- Chọn danh mục cha --
+            if parentCategory
+            +select-tree(parentCategory, 1, productCategory.parent_id, productCategory.id)
                 
         div(class="mb-3") 
             label(for="desc") Mô tả

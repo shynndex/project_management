@@ -89,7 +89,7 @@ module.exports.edit = async (req, res) => {
     };
 
     const productCategory = await ProductCategory.findOne(find);
-
+    
     const parentCategory = await ProductCategory.find({
       deleted:false,
     });
