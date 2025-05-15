@@ -17,7 +17,7 @@ module.exports.index = async (req, res) => {
 
 
 //[GET] /admin/create
-module.exports.create = async (req, res) => {
+module.exports.create = (req, res) => {
  
   res.render("admin/pages/roles/create", {
     title: "Tạo Nhóm quyền",
@@ -35,4 +35,41 @@ module.exports.createPost = async (req, res) => {
     req.flash("error", "Đã xảy ra lỗi khi thêm sản phẩm!");
     res.redirect(`${systemConfix.prefixAdmin}/roles`);
   }
+};
+
+//[GET] /admin/edit
+module.exports.edit = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    let find = {
+      _id: id,
+      deleted: false,
+    };
+
+    const data=await Role.findOne(find);
+
+    res.render("admin/pages/roles/edit", {
+      title: "Sửa Nhóm quyền",
+      data: data,
+    });
+  } catch (error) {
+    req.flash("error", "Đã xảy ra lỗi khi tìm nhóm quyền!");
+    res.redirect(`${systemConfix.prefixAdmin}/roles`);
+  }
+};
+
+//[PATCH] /admin/product-category/edit
+module.exports.editPatch = async (req, res) => {
+  const id=req.params.id;
+
+  try {
+    await Role.updateOne({_id:id},req.body );
+    req.flash("success", `Đã cập nhật danh mục "${req.body.title}" thành công !`);
+
+  } catch (error) {
+    req.flash("error","Có lỗi xảy ra,vui lòng thử lại")
+  }
+
+  res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/roles`);
 };
