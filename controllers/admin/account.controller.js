@@ -14,12 +14,11 @@ module.exports.index = async (req, res) => {
 
   for (const account of accounts) {
     const role = await Role.findOne({
-      _id:account.role_id,
-      deleted:false,
+      _id: account.role_id,
+      deleted: false,
     });
-    account.role=role;
+    account.role = role;
   }
-
 
   res.render("admin/pages/accounts/index", {
     title: "Danh sách tài khoản",
@@ -77,3 +76,72 @@ module.exports.createPost = async (req, res) => {
   }
 };
 
+//[GET] /admin/accounts/edit
+module.exports.edit = async (req, res) => {
+  try {
+    let find = {
+      _id: req.params.id,
+      deleted: false,
+    };
+
+    const account = await Account.findOne(find);
+    const role = await Role.find({
+      deleted: false,
+    });
+
+    res.render("admin/pages/accounts/edit", {
+      title: "Chỉnh sửa tài khoản",
+      role: role,
+      account: account,
+    });
+  } catch (error) {
+    req.flash("error", "Đã xảy ra lỗi khi tìm tài khoản!");
+    res.redirect(`${systemConfix.prefixAdmin}/accounts`);
+  }
+};
+
+//[PATCH] /admin/accounts/edit
+module.exports.editPatch = async (req, res) => {
+  try {
+    if (req.body.password) {
+      req.body.password = md5(req.body.password);
+    } else {
+      delete req.body.password;
+    }
+
+    const emailExist = await Account.findOne({
+      email: req.body.email,
+      deleted: false,
+      _id: { $ne: req.params.id },
+    });
+
+    const phoneExist = await Account.findOne({
+      phone: req.body.phone,
+      deleted: false,
+      _id: { $ne: req.params.id },
+    });
+
+    let hasError = false;
+
+    if (emailExist) {
+      req.flash("error", `Email ${req.body.email} đã tồn tại!`);
+      hasError = true;
+    }
+
+    if (phoneExist) {
+      req.flash("error", `<br>Số điện thoại ${req.body.phone} đã tồn tại!`);
+      hasError = true;
+    }
+
+    if (hasError) {
+      res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/accounts`);
+    }
+
+    await Account.updateOne({ _id: req.params.id }, req.body);
+    req.flash("success", `Đã cập nhật tài khoản thành công !`);
+  } catch (error) {
+    req.flash("error", "Có lỗi xảy ra,vui lòng thử lại");
+  }
+
+  res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/accounts`);
+};

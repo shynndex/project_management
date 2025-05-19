@@ -34,7 +34,7 @@ module.exports.createPost = async (req, res) => {
   }
 };
 
-//[GET] /admin/edit
+//[GET] /admin/roles/edit
 module.exports.edit = async (req, res) => {
   try {
     const id = req.params.id;
