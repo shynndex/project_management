@@ -13,9 +13,8 @@ module.exports.login = (req, res) => {
 module.exports.loginPost = async (req, res) => {
   //destructuring: const {email,password}=req.body
 
-  //thêm trim vào chỗ này
-  const email=req.body.email;
-  const password=req.body.password;
+  const email=trim(req.body.email);
+  const password=trim(req.body.password);
 
   const user= await Account.findOne({
     email:email,
@@ -44,4 +43,10 @@ module.exports.loginPost = async (req, res) => {
   req.flash("success", "Đăng nhập thành công!");
   res.redirect(`${systemConfix.prefixAdmin}/dashboard`);
 
+};
+
+//[POST] /admin/auth/logout
+module.exports.logout = (req, res) => {
+  res.clearCookie("token");
+  res.redirect(`${systemConfix.prefixAdmin}/auth/login`);
 };
