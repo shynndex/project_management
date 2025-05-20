@@ -1,4 +1,6 @@
 extends ../../layouts/defaults.pug
+include ../../mixins/alert.pug
 
 block content 
+    +alert-success(5000)
     h1 Trang tổng quan admin

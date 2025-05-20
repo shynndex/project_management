@@ -1,0 +1,23 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+
+block content
+  +alert-error(5000)
+  +alert-success(5000)
+  form(action=`${prefixAdmin}/auth/login` method="POST")
+    div(class='container')
+      div(class='box')
+        div(class='header')
+          header
+            img(src="https://res.cloudinary.com/dntwqb6kj/image/upload/v1747668256/123_nlw54e.png" alt="")
+          p Đăng nhập
+        div(class='input-box')
+          label(for="email") Email
+          input(class='input-field' type="email" id="email" name="email" required)
+          i(class='fa-regular fa-user')
+        div(class='input-box')
+          label(for="pass") Mật khẩu
+          input(class='input-field' type="password" id="password" name="password" required)
+          i(class='fa-solid fa-lock')
+        div(class='input-box')
+          input(class='input-submit' type="submit" value="Đăng nhập")
