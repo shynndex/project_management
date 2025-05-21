@@ -4,59 +4,60 @@ include ../../mixins/select-tree.pug
 
 
 block content
-    +alert-success(5000)
-    +alert-error(5000)
-    h1(class="mb-4") Chỉnh sửa sản phẩm
+    if(role.permissions.includes("product_edit"))
+        +alert-success(5000)
+        +alert-error(5000)
+        h1(class="mb-4") Chỉnh sửa sản phẩm
 
-    form(action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH` id="form-edit-product" method="POST" enctype="multipart/form-data")
-    
-        div(class="mb-3")
-            label(for="title") Tiêu đề
-            input(type="text", name="title" id="title" class="form-control" value=product.title required)
+        form(action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH` id="form-edit-product" method="POST" enctype="multipart/form-data")
+        
+            div(class="mb-3")
+                label(for="title") Tiêu đề
+                input(type="text", name="title" id="title" class="form-control" value=product.title required)
 
-        div(class="mb-3")
-            label(for="category_id") Danh mục 
-            select(name="category_id" id="category_id" class="form-select")
-                option(value="") -- Chọn danh mục --
-                if(category)
-                    +select-tree(category,1 ,product.category_id)
+            div(class="mb-3")
+                label(for="category_id") Danh mục 
+                select(name="category_id" id="category_id" class="form-select")
+                    option(value="") -- Chọn danh mục --
+                    if(category)
+                        +select-tree(category,1 ,product.category_id)
 
-        div(class="mb-3")
-            label(for="desc") Mô tả
-            textarea(name="description" class="form-control textarea-mce" id="desc" rows="5") #{product.description}
+            div(class="mb-3")
+                label(for="desc") Mô tả
+                textarea(name="description" class="form-control textarea-mce" id="desc" rows="5") #{product.description}
 
-        div(class="mb-3")
-            label(for="price") Giá ($)
-            input(type="number" name="price" class="form-control" id="price" value=product.price min="0")
+            div(class="mb-3")
+                label(for="price") Giá ($)
+                input(type="number" name="price" class="form-control" id="price" value=product.price min="0")
 
-        div(class="mb-3")
-            label(for="discount") Giảm giá (%)
-            input(type="number" name="discountPercentage" class="form-control" id="discount" value=product.discountPercentage min="0")
+            div(class="mb-3")
+                label(for="discount") Giảm giá (%)
+                input(type="number" name="discountPercentage" class="form-control" id="discount" value=product.discountPercentage min="0")
 
-        div(class="mb-3")
-            label(for="stock") Số lượng
-            input(type="number" name="stock" class="form-control" id="stock" value=product.stock min="0")
+            div(class="mb-3")
+                label(for="stock") Số lượng
+                input(type="number" name="stock" class="form-control" id="stock" value=product.stock min="0")
 
-        div(class="mb-3" upload-image)
-            label(for="thumbnail") Ảnh
-            input(type="file" name="thumbnail" class="form-control" id="thumbnail" accept="image/*" upload-image-input )
-            img(src=product.thumbnail upload-image-preview class="img-preview")
-            span(remove-image-btn class="d-none") x 
+            div(class="mb-3" upload-image)
+                label(for="thumbnail") Ảnh
+                input(type="file" name="thumbnail" class="form-control" id="thumbnail" accept="image/*" upload-image-input )
+                img(src=product.thumbnail upload-image-preview class="img-preview")
+                span(remove-image-btn class="d-none") x 
 
-        div(class="mb-3")
-            label(for="position") Vị trí
-            input(type="text" name="position" class="form-control" id="position" placeholder="Tự động tăng" min="1" value=product.position)
+            div(class="mb-3")
+                label(for="position") Vị trí
+                input(type="text" name="position" class="form-control" id="position" placeholder="Tự động tăng" min="1" value=product.position)
 
-        div(class="form-check form-check-inline")
-            input(type="radio" name="status" class="form-check-input" id="statusActive" value="active" checked=(product.status == "active" ? true : false))
-            label(for="statusActive" class="form-check-label") Hoạt động 
+            div(class="form-check form-check-inline")
+                input(type="radio" name="status" class="form-check-input" id="statusActive" value="active" checked=(product.status == "active" ? true : false))
+                label(for="statusActive" class="form-check-label") Hoạt động 
 
-        div(class="form-check form-check-inline")
-            input(type="radio" name="status" class="form-check-input" id="statusInActive" value="inactive" checked=(product.status == "inactive" ? true : false))
-            label(for="statusInActive" class="form-check-label") Dừng Hoạt động 
+            div(class="form-check form-check-inline")
+                input(type="radio" name="status" class="form-check-input" id="statusInActive" value="inactive" checked=(product.status == "inactive" ? true : false))
+                label(for="statusInActive" class="form-check-label") Dừng Hoạt động 
 
-        div(class="mt-3")
-            button(type="submit" class="btn btn-primary") Cập nhật
+            div(class="mt-3")
+                button(type="submit" class="btn btn-primary") Cập nhật
 
 
 

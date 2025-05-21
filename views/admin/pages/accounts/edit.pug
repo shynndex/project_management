@@ -2,56 +2,57 @@ extends ../../layouts/defaults.pug
 include ../../mixins/alert.pug
 
 
-block content 
-    h1(class="mb-4") Cập nhật tài khoản
-    +alert-error(5000)
-    +alert-success(5000)
-    if role
-        form(
-            action=`${prefixAdmin}/accounts/edit/${account.id}?_method=PATCH`
-            method="POST"
-            enctype="multipart/form-data"
-        )
-            div(class="mb-3")
-                label(for="fullName") Họ tên *
-                input(type="text", name="fullName" id="fullName" class="form-control" required value=account.fullName)
+block content
+    if(role.permissions.includes("accounts_edit"))                                                       
+        h1(class="mb-4") Cập nhật tài khoản
+        +alert-error(5000)
+        +alert-success(5000)
+        if role
+            form(
+                action=`${prefixAdmin}/accounts/edit/${account.id}?_method=PATCH`
+                method="POST"
+                enctype="multipart/form-data"
+            )
+                div(class="mb-3")
+                    label(for="fullName") Họ tên *
+                    input(type="text", name="fullName" id="fullName" class="form-control" required value=account.fullName)
 
-            div(class="mb-3")
-                label(for="email") Email *
-                input(type="email" name="email" id="email" class="form-control" required value=account.email)
+                div(class="mb-3")
+                    label(for="email") Email *
+                    input(type="email" name="email" id="email" class="form-control" required value=account.email)
 
-            div(class="mb-3") 
-                label(for="password") Mật khẩu
-                input(type="password" name="password" id="password" class="form-control")
-            
-            div(class="mb-3")
-                label(for="phone") Điện thoại
-                input(type="number" name="phone" class="form-control" id="phone" value=account.phone)
+                div(class="mb-3") 
+                    label(for="password") Mật khẩu
+                    input(type="password" name="password" id="password" class="form-control")
                 
-            div(class="mb-3" upload-image)
-                label(for="avatar") Avatar
-                input(type="file" name="avatar" class="form-control" id="avatar" accept="image/*" upload-image-input)
-                img(src=account.avatar upload-image-preview class="img-preview")
-                span(remove-image-btn class="d-none") x 
-        
-            div(class="mb-3")
-                label(for="role_id") Phân quyền
-                select(name="role_id" id="role_id" class="form-control")  
-                    option(disabled) -- Chọn --
-                    each item in role
-                        option(value=item.id selected=(item.id==account.role_id)) #{item.title}
+                div(class="mb-3")
+                    label(for="phone") Điện thoại
+                    input(type="number" name="phone" class="form-control" id="phone" value=account.phone)
+                    
+                div(class="mb-3" upload-image)
+                    label(for="avatar") Avatar
+                    input(type="file" name="avatar" class="form-control" id="avatar" accept="image/*" upload-image-input)
+                    img(src=account.avatar upload-image-preview class="img-preview")
+                    span(remove-image-btn class="d-none") x 
+            
+                div(class="mb-3")
+                    label(for="role_id") Phân quyền
+                    select(name="role_id" id="role_id" class="form-control")  
+                        option(disabled) -- Chọn --
+                        each item in role
+                            option(value=item.id selected=(item.id==account.role_id)) #{item.title}
 
-            div(class="mb-3 form-check form-check-inline")
-                input(type="radio" name="status" class="form-check-input" id="statusActive" value="active" checked=(account.status=="active"))
-                label(for="statusActive" class="form-check-label") Hoạt động 
+                div(class="mb-3 form-check form-check-inline")
+                    input(type="radio" name="status" class="form-check-input" id="statusActive" value="active" checked=(account.status=="active"))
+                    label(for="statusActive" class="form-check-label") Hoạt động 
 
-            div(class="mb-3 form-check form-check-inline")
-                input(type="radio" name="status" class="form-check-input" id="statusInActive" value="inactive" checked=(account.status=="inactive"))
-                label(for="statusInActive" class="form-check-label") Dừng Hoạt động 
+                div(class="mb-3 form-check form-check-inline")
+                    input(type="radio" name="status" class="form-check-input" id="statusInActive" value="inactive" checked=(account.status=="inactive"))
+                    label(for="statusInActive" class="form-check-label") Dừng Hoạt động 
 
-            div(class="mb-3")
-                button(type="submit" class="btn btn-primary") Cập nhật
-    else 
-        p Vui lòng tạo nhóm quyền trước khi cập nhật tài khoản
-        p   
-            a(href=`${prefixAdmin}/roles/create` class="btn btn-outline-success") Thêm mới nhóm quyền
+                div(class="mb-3")
+                    button(type="submit" class="btn btn-primary") Cập nhật
+        else 
+            p Vui lòng tạo nhóm quyền trước khi cập nhật tài khoản
+            p   
+                a(href=`${prefixAdmin}/roles/create` class="btn btn-outline-success") Thêm mới nhóm quyền

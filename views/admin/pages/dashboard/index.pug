@@ -4,3 +4,8 @@ include ../../mixins/alert.pug
 block content 
     +alert-success(5000)
     h1 Trang tổng quan admin
+
+    div #{user}
+    div ----------------
+    div #{role.title}
+    div #{role.permissions}
