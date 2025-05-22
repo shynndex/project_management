@@ -12,6 +12,9 @@ const methodOverride = require('method-override')
 
 const flash = require('express-flash')
 
+const moment = require("moment")
+// require('moment/locale/vi');
+
 const cookieParser = require('cookie-parser')
 
 const session = require('express-session')
@@ -43,10 +46,12 @@ app.use(flash());
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 //End TinyMCE
 
+// Chỉnh thời gian về tiếng việt
+// moment.locale('vi');
 
 //App local variable (Đặt tên là prefixAdmin)
 app.locals.prefixAdmin = systemConfix.prefixAdmin;
-
+app.locals.moment = moment;
 
 // Cấu hình thư mục chứa file tĩnh
 app.use(express.static(`${__dirname}/public`));

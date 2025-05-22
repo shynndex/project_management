@@ -5,6 +5,8 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
+include ../../mixins/moment.pug
+
 
 
 block content
@@ -50,7 +52,8 @@ block content
                             th Tiêu đề 
                             th Giá
                             th Vị trí  
-                            th Trạng thái 
+                            th Trạng thái
+                            th Người tạo 
                             th Hành động
 
                     tbody 
@@ -87,6 +90,9 @@ block content
                                             data-id=item.id
                                             button-change-status
                                         ) Không hoạt động
+                                td 
+                                    p #{item.accountFullName}
+                                    +formatDate(item.createdBy.createdAt)
                                 td  
                                     a(
                                     href=`${prefixAdmin}/products/detail/${item.id}`

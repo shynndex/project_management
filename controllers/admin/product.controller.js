@@ -4,8 +4,8 @@ const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfix = require("../../config/system");
 const ProductCategory = require("../../models/product-category.model");
+const Account = require("../../models/account.model");
 const createTreeHelper = require("../../helpers/createTree");
-
 
 //[GET] /admin/products
 module.exports.product = async (req, res) => {
@@ -13,7 +13,7 @@ module.exports.product = async (req, res) => {
   // console.log(req.query.);
 
   const filterStatus = filterStatusHelper(req.query);
-  
+
   let find = {
     deleted: false,
   };
@@ -48,12 +48,11 @@ module.exports.product = async (req, res) => {
   //End Pagination
 
   //Sort
-  let sort={};
-  if(req.query.sortKey && req.query.sortValue){
+  let sort = {};
+  if (req.query.sortKey && req.query.sortValue) {
     sort[req.query.sortKey] = req.query.sortValue;
-  }
-  else{
-    sort.position="desc";
+  } else {
+    sort.position = "desc";
   }
   //End Sort
 
@@ -61,6 +60,16 @@ module.exports.product = async (req, res) => {
     .sort(sort)
     .limit(objectPagination.limitItem)
     .skip(objectPagination.skip);
+
+  for (const product of products) {
+    const user = await Account.findOne({
+      _id: product.createdBy.account_id,
+    });
+
+    if (user) {
+      product.accountFullName = user.fullName;
+    }
+  }
 
   res.render("admin/pages/products/index", {
     title: "Danh sách sản phẩm",
@@ -110,7 +119,10 @@ module.exports.changeMulti = async (req, res) => {
         { _id: { $in: ids } },
         {
           deleted: true,
-          deletedAt: new Date(),
+          deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date(),
+          },
         }
       );
       req.flash("success", `Đã xóa sản phẩm  ${ids.length} thành công !`);
@@ -143,7 +155,10 @@ module.exports.deleteProduct = async (req, res) => {
     { _id: id },
     {
       deleted: true,
-      deletedAt: new Date(),
+      deletedBy: {
+        account_id: res.locals.user.id,
+        deletedAt: new Date(),
+      },
     }
   );
 
@@ -180,14 +195,15 @@ module.exports.createPost = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
-  try{
+  try {
+    req.body.createdBy = {
+      account_id: res.locals.user.id,
+    };
     const product = new Product(req.body);
     await product.save();
     req.flash("success", "Thêm sản phẩm thành công!");
     res.redirect(`${systemConfix.prefixAdmin}/products`);
-  }
-  
-  catch (error) {
+  } catch (error) {
     req.flash("error", "Đã xảy ra lỗi khi thêm sản phẩm!");
     res.redirect(`${systemConfix.prefixAdmin}/products`);
   }
@@ -203,13 +219,13 @@ module.exports.edit = async (req, res) => {
 
     const product = await Product.findOne(find);
 
-    const category = await ProductCategory.find({deleted:false});
+    const category = await ProductCategory.find({ deleted: false });
     const newCategory = createTreeHelper(category);
 
     res.render("admin/pages/products/edit", {
       title: "Chỉnh sửa sản phẩm",
       product: product,
-      category:newCategory,
+      category: newCategory,
     });
   } catch (error) {
     req.flash("error", "Đã xảy ra lỗi khi tìm sản phẩm!");
@@ -219,19 +235,20 @@ module.exports.edit = async (req, res) => {
 
 //[PATCH] /admin/products/edit
 module.exports.editPatch = async (req, res) => {
-  const id=req.params.id;
+  const id = req.params.id;
   req.body.price = parseInt(req.body.price);
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
   req.body.position = parseInt(req.body.position);
 
-
   try {
-    await Product.updateOne({_id:id},req.body );
-   req.flash("success", `Đã cập nhật sản phẩm ${req.body.position} thành công !`);
-
+    await Product.updateOne({ _id: id }, req.body);
+    req.flash(
+      "success",
+      `Đã cập nhật sản phẩm ${req.body.position} thành công !`
+    );
   } catch (error) {
-    req.flash("error","Có lỗi xảy ra,vui lòng thử lại")
+    req.flash("error", "Có lỗi xảy ra,vui lòng thử lại");
   }
 
   res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
