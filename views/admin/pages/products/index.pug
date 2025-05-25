@@ -53,7 +53,8 @@ block content
                             th Giá
                             th Vị trí  
                             th Trạng thái
-                            th Người tạo 
+                            th Người tạo
+                            th Người cập nhật 
                             th Hành động
 
                     tbody 
@@ -93,6 +94,11 @@ block content
                                 td 
                                     p #{item.accountFullName}
                                     +formatDate(item.createdBy.createdAt)
+                                td 
+                                    - const updatedBy=item.updatedBy.slice(-1)[0]
+                                    if (updatedBy)
+                                        p #{updatedBy.accountFullName}
+                                        +formatDateTime(updatedBy.updatedAt)
                                 td  
                                     a(
                                     href=`${prefixAdmin}/products/detail/${item.id}`
