@@ -20,6 +20,13 @@ block content
                     option(value="") -- Chọn danh mục --
                     if(category)
                         +select-tree(category)
+            div(class="form-check form-check-inline")
+                input(type="radio" name="featured" class="form-check-input" id="featured1" value="1")
+                label(for="featured1" class="form-check-label") Nổi bật
+
+            div(class="form-check form-check-inline")
+                input(type="radio" name="featured" class="form-check-input" id="featured0" value="0" checked)
+                label(for="featured0" class="form-check-label") Không
 
             div(class="mb-3")
                 label(for="desc") Mô tả

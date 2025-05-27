@@ -73,13 +73,13 @@ module.exports.product = async (req, res) => {
 
     // Get editor information
     // const updatedBy = product.updatedBy[product.updatedBy.length - 1];
-     const updatedBy = product.updatedBy.slice(-1)[0];
+    const updatedBy = product.updatedBy.slice(-1)[0];
     if (updatedBy) {
       const editor = await Account.findOne({
         _id: updatedBy.account_id,
       });
-      
-      updatedBy.accountFullName=editor.fullName;//???
+
+      updatedBy.accountFullName = editor.fullName; //???
     }
   }
 
@@ -94,21 +94,24 @@ module.exports.product = async (req, res) => {
 
 //[PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-  const status = req.params.status;
-  const id = req.params.id;
+  const permissions = res.locals.role.permissions;
+  if (permissions.includes("product_edit")) {
+    const status = req.params.status;
+    const id = req.params.id;
 
-  const updatedBy = {
-    account_id: res.locals.user.id,
-    updatedAt: new Date(),
-  };
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      updatedAt: new Date(),
+    };
 
-  await Product.updateOne(
-    { _id: id },
-    { status: status, $push: { updatedBy: updatedBy } }
-  );
+    await Product.updateOne(
+      { _id: id },
+      { status: status, $push: { updatedBy: updatedBy } }
+    );
 
-  req.flash("success", "Cập nhật trạng thái thành công !");
-  res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
+    req.flash("success", "Cập nhật trạng thái thành công !");
+    res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
+  }
 };
 
 //[PATCH] /admin/products/change-multi
@@ -183,22 +186,26 @@ module.exports.changeMulti = async (req, res) => {
 
 //[DELETE] /admin/products/delete/:id
 module.exports.deleteProduct = async (req, res) => {
-  const id = req.params.id;
+  const permissions = res.locals.role.permissions;
 
-  await Product.updateOne(
-    { _id: id },
-    {
-      deleted: true,
-      deletedBy: {
-        account_id: res.locals.user.id,
-        deletedAt: new Date(),
-      },
-    }
-  );
+  if (permissions.includes("product_delete")) {
+    const id = req.params.id;
 
-  req.flash("success", `Đã xóa sản phẩm ${id.length} thành công !`);
+    await Product.updateOne(
+      { _id: id },
+      {
+        deleted: true,
+        deletedBy: {
+          account_id: res.locals.user.id,
+          deletedAt: new Date(),
+        },
+      }
+    );
 
-  res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
+    req.flash("success", `Đã xóa sản phẩm ${id.length} thành công !`);
+
+    res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
+  }
 };
 
 //[GET] /admin/products/create
@@ -218,28 +225,32 @@ module.exports.create = async (req, res) => {
 
 //[POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
-  req.body.price = parseInt(req.body.price);
-  req.body.discountPercentage = parseInt(req.body.discountPercentage);
-  req.body.stock = parseInt(req.body.stock);
+  const permissions = res.locals.role.permissions;
 
-  if (req.body.position == "") {
-    const countProducts = await Product.countDocuments();
-    req.body.position = countProducts + 1;
-  } else {
-    req.body.position = parseInt(req.body.position);
-  }
+  if (permissions.includes("product_delete")) {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
 
-  try {
-    req.body.createdBy = {
-      account_id: res.locals.user.id,
-    };
-    const product = new Product(req.body);
-    await product.save();
-    req.flash("success", "Thêm sản phẩm thành công!");
-    res.redirect(`${systemConfix.prefixAdmin}/products`);
-  } catch (error) {
-    req.flash("error", "Đã xảy ra lỗi khi thêm sản phẩm!");
-    res.redirect(`${systemConfix.prefixAdmin}/products`);
+    if (req.body.position == "") {
+      const countProducts = await Product.countDocuments();
+      req.body.position = countProducts + 1;
+    } else {
+      req.body.position = parseInt(req.body.position);
+    }
+
+    try {
+      req.body.createdBy = {
+        account_id: res.locals.user.id,
+      };
+      const product = new Product(req.body);
+      await product.save();
+      req.flash("success", "Thêm sản phẩm thành công!");
+      res.redirect(`${systemConfix.prefixAdmin}/products`);
+    } catch (error) {
+      req.flash("error", "Đã xảy ra lỗi khi thêm sản phẩm!");
+      res.redirect(`${systemConfix.prefixAdmin}/products`);
+    }
   }
 };
 
@@ -269,7 +280,10 @@ module.exports.edit = async (req, res) => {
 
 //[PATCH] /admin/products/edit
 module.exports.editPatch = async (req, res) => {
-  const id = req.params.id;
+  const permissions = res.locals.role.permissions;
+
+  if (permissions.includes("product_delete")){
+    const id = req.params.id;
   req.body.price = parseInt(req.body.price);
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
@@ -296,6 +310,8 @@ module.exports.editPatch = async (req, res) => {
   }
 
   res.redirect(req.get("Referer") || `${systemConfix.prefixAdmin}/products`);
+  }
+  
 };
 
 //[GET] /admin/products/detail/:id
