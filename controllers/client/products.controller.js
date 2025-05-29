@@ -1,5 +1,8 @@
 const Product = require("../../models/product.model");
 
+const productsHelper = require("../../helpers/products");
+
+
 // .index là đặt tên để gọi làm từ bên file khác
 //[GET] /products
 module.exports.index = async (req, res) => {
@@ -8,14 +11,7 @@ module.exports.index = async (req, res) => {
     deleted: false,
   }).sort({ position:"desc"});
 
-  const newProduct=products.map((item) => {
-    //tạo ra key pricenew để tính giá sau giảm
-    item.priceNew = (
-      (item.price * (100 - item.discountPercentage)) / 100 ).toFixed(0);
-      return item;
-  });
-
-  // console.log(newProduct);
+ const newProduct = productsHelper.priceNewProducts(products);
 
   res.render("client/pages/products/index", {
     title: "Trang sản phẩm",
