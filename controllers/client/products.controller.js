@@ -5,7 +5,6 @@ const ProductCategory = require("../../models/product-category.model");
 const productsHelper = require("../../helpers/products");
 const productCategoryHelper = require("../../helpers/product-category");
 
-
 // .index là đặt tên để gọi làm từ bên file khác
 //[GET] /products
 module.exports.index = async (req, res) => {
@@ -22,16 +21,27 @@ module.exports.index = async (req, res) => {
   });
 };
 
-//[GET] /products/:slug
+//[GET] /products/:slugProduct
 module.exports.detail = async (req, res) => {
   try {
     const find = {
       deleted: false,
-      slug: req.params.slug,
+      slug: req.params.slugProduct,
       status: "active",
     };
 
     const product = await Product.findOne(find);
+
+    if (product.category_id) {
+      const category = await ProductCategory.findOne({
+        _id: product.category_id,
+        status: "active",
+        deleted: false,
+      });
+      product.category = category;
+    }
+
+    product.priceNew = productsHelper.priceNewProduct(product);
 
     res.render("client/pages/products/detail", {
       title: product.title,
@@ -52,7 +62,9 @@ module.exports.category = async (req, res) => {
       status: "active",
     });
 
-    const listSubCategory = await productCategoryHelper.getSubCategory(category.id);
+    const listSubCategory = await productCategoryHelper.getSubCategory(
+      category.id
+    );
     const listSubCategoryId = listSubCategory.map((item) => item.id);
 
     const products = await Product.find({
