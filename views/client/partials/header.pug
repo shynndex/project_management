@@ -23,3 +23,7 @@ header.header
                             - const pathProduct = "/products"  
                             a(href=pathProduct) Sản phẩm
                             +sub-menu(productCategory,pathProduct)
+                        li  
+                            a(href="#")
+                                i(class="fa-solid fa-cart-shopping fa-lg")
+                                span(class="cart-badge") #{miniCart ? miniCart.totalQuantity : 0}

@@ -1,7 +1,6 @@
 const Cart = require("../../models/cart.model");
 
 module.exports.cardId = async (req, res, next) => {
-
   if (!req.cookies.cartId) {
     //tạo giỏ hàng
     const cart = new Cart();
@@ -14,6 +13,16 @@ module.exports.cardId = async (req, res, next) => {
     });
   } else {
     // lấy ra giỏ hàng
+    const cart = await Cart.findOne({
+      _id: req.cookies.cartId,
+    });
+
+    cart.totalQuantity = cart.products.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    res.locals.miniCart=cart;
   }
   next();
 };

@@ -85,12 +85,12 @@
     object-fit: contain;
 }
 
-.product-item .inner-featured{
+.product-item .inner-featured {
     position: absolute;
     top: 0;
     right: 0;
     background: green;
-    color:white;
+    color: white;
     padding: 3px 6px;
     font-weight: 600;
     font-size: 14px;
@@ -202,7 +202,7 @@
 /*End Sub menu */
 
 /* Show Alert */
-[show-alert]{
+[show-alert] {
     position: fixed;
     top: 70px;
     right: 15px;
@@ -220,13 +220,14 @@
         opacity: 1;
         transform: translateX(0);
     }
+
     to {
         opacity: 0;
         transform: translateX(100%);
     }
 }
 
-[show-alert] [close-alert]{
+[show-alert] [close-alert] {
     display: inline-block;
     width: 24px;
     height: 24px;
@@ -236,47 +237,48 @@
     border-radius: 50%;
     cursor: pointer;
 }
+
 /*End Show Alert */
 
 /* product-detail */
-.product-detail .inner-thumb img{
+.product-detail .inner-thumb img {
     width: 100%;
     height: auto;
 }
 
-.product-detail .inner-title{
+.product-detail .inner-title {
     font-size: 32px;
-    margin-bottom:15px;
+    margin-bottom: 15px;
 }
 
-.product-detail .inner-category{
-    margin-bottom:10px ;
+.product-detail .inner-category {
+    margin-bottom: 10px;
 }
 
-.product-detail .inner-category a{
+.product-detail .inner-category a {
     text-decoration: none;
 }
 
-.product-detail .inner-price-new{
-    color:green;
+.product-detail .inner-price-new {
+    color: green;
     font-weight: 600;
     font-size: 24px;
     margin-bottom: 10px;
 }
 
-.product-detail .inner-price-old{
-    color:red;
+.product-detail .inner-price-old {
+    color: red;
     font-weight: 600;
-    font-size:20px;
+    font-size: 20px;
     text-decoration: line-through;
     margin-bottom: 10px;
 }
 
-.product-detail .inner-percent{
+.product-detail .inner-percent {
     margin-bottom: 10px;
 }
 
-.product-detail .inner-percent span{
+.product-detail .inner-percent span {
     color: #fff;
     background: red;
     font-weight: 600;
@@ -285,11 +287,11 @@
     border-radius: 8px;
 }
 
-.product-detail .inner-stock{
+.product-detail .inner-stock {
     margin-bottom: 10px;
 }
 
-.product-detail .inner-stock span{
+.product-detail .inner-stock span {
     color: #fff;
     background: green;
     font-weight: 600;
@@ -297,4 +299,22 @@
     padding: 3px 6px;
     border-radius: 8px;
 }
+
 /*End product-detail */
+
+/* Cart badge */
+.cart-badge {
+    position: absolute;
+    top: 25px;
+    right: 3px;
+    font-size: 15px;
+    background: red;
+    width: 20px;
+    height: auto;
+    color: white;
+    border-radius: 50%;
+    line-height: 19px;
+    text-align: center;
+}
+
+/*End Cart badge */
