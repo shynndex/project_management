@@ -214,7 +214,7 @@
     animation: alert-fadeout 0.5s forwards;
 }
 
-/* Keyframes hiệu ứng mượt */
+/* Keyframes hiệu ứng mượt */   
 @keyframes alert-fadeout {
     from {
         opacity: 1;
@@ -318,3 +318,4 @@
 }
 
 /*End Cart badge */
+

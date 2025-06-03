@@ -26,8 +26,8 @@ block content
                     if(product.discountPercentage)
                         div(class="inner-percent") Giảm tới <span>#{product.discountPercentage}%</span>
                     
-                    if(product.stock)
-                        div(class="inner-stock") Còn lại <span>#{product.stock}</span> Sản phẩm
+                    //- if(product.stock)
+                    div(class="inner-stock") Còn lại <span>#{product.stock > 0 ? product.stock : 0}</span> Sản phẩm
                     
                     form(action=`/cart/add/${product.id}` method="POST")
                         input(type="number" name="quantity" value="1" min="1" class="form-control mb-2" max=product.stock)
