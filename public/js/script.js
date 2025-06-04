@@ -14,3 +14,13 @@ if (showAlert) {
 }
 //End Show alert
 
+//Button Back
+const buttonBack = document.querySelectorAll("[button-back]");
+if (buttonBack.length > 0) {
+  buttonBack.forEach((button) => {
+    button.addEventListener("click", () => {
+      history.back();
+    });
+  });
+}
+//End Button Back

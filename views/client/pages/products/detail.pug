@@ -1,9 +1,10 @@
 extends ../../layouts/defaults.pug
 include ../../mixins/box-head.pug
 
-
 block content
     .product-detail
+        button(class="button-back" role="button" button-back) Trở lại
+
         .container.my-5
             .row
                 .col-6
@@ -19,14 +20,13 @@ block content
 
                     if (product.priceNew)
                         div(class="inner-price-new") #{product.priceNew}$
-                    
+
                     if(product.price)
                         div(class="inner-price-old") #{product.price}$
 
                     if(product.discountPercentage)
                         div(class="inner-percent") Giảm tới <span>#{product.discountPercentage}%</span>
-                    
-                    //- if(product.stock)
+
                     div(class="inner-stock") Còn lại <span>#{product.stock > 0 ? product.stock : 0}</span> Sản phẩm
                     
                     form(action=`/cart/add/${product.id}` method="POST")

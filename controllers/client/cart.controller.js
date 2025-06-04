@@ -79,7 +79,8 @@ module.exports.addPost = async (req, res) => {
       }
     );
   }
-
+  
+  //thêm trừ sản phẩm có sẵn sau khi thêm vào giỏ hàng
   req.flash("success", "Đã thêm sản phẩm vào giỏ hàng !");
 
   res.redirect(req.get("Referer") || `/products/detail/${productId}`);
