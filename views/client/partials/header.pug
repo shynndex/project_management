@@ -1,6 +1,6 @@
 include ../mixins/sub-menu.pug
 
-header.header 
+header.header
     .container-fluid 
         .row.align-items-center
             .col-3 
@@ -10,7 +10,7 @@ header.header
 
             .col-5 
                 form(action="/search" method="GET")
-                    div(class="form-group d-flex mb-0")
+                    .form-group.d-flex.mb-0
                         input(type="text" placeholder="Nhập từ khóa..." class="form-control" name="keyword" value=keyword)
                         button(type="submit" class="btn btn-primary") Tìm
 
@@ -19,13 +19,28 @@ header.header
                     ul 
                         li
                             a(href="/") Trang chủ
-                        li(class="sub-menu")
+                        li.sub-menu
                             - const pathProduct = "/products"  
                             a(href=pathProduct) Sản phẩm
-                            +sub-menu(productCategory,pathProduct)
-                        li  
-                            a(href="/cart" style="position: relative")
-                                i(class="fa-solid fa-cart-shopping fa-lg")
-                                span(class="cart-badge") #{miniCart ? miniCart.totalQuantity : 0}
-                        li  
-                            a(href="/user/auth") Đăng ký/Đăng nhập
+                            +sub-menu(productCategory, pathProduct)
+                        li
+                            a(href="/cart", style="position: relative")
+                                i.fa-solid.fa-cart-shopping.fa-lg
+                                span.cart-badge #{miniCart ? miniCart.totalQuantity : 0}
+                        if user
+                            li.user-dropdown.btn-group
+                                button.btn.dropdown-toggle-no-caret(
+                                    type="button", 
+                                    data-bs-toggle="dropdown", 
+                                    aria-expanded="false", 
+                                    style="background:none;border:none;padding:0"
+                                )
+                                    i.fa-solid.fa-circle-user.fa-lg
+                                ul.dropdown-menu
+                                    li: a.dropdown-item(href="#") Thông tin tài khoản
+                                    li: a.dropdown-item(href="#") Đơn hàng của tôi
+                                    li: hr.dropdown-divider
+                                    li: a.dropdown-item(href="/user/logout") Đăng xuất
+                        else
+                            li
+                                a(href="/user/auth") Đăng ký/Đăng nhập

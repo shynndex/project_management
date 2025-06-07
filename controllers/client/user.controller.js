@@ -67,3 +67,10 @@ module.exports.loginPost = async (req, res) => {
     console.log(error);
   }
 };
+
+
+//[GET] /user/logout
+module.exports.logout = async (req, res) =>{
+  res.clearCookie("tokenUser");
+  res.redirect("/");
+}
