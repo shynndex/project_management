@@ -49,7 +49,8 @@ module.exports.loginPost = async (req, res) => {
     return;
   }
 
-  res.cookie("token", user.token);
+  const expires = new Date(Date.now() + 24 * 60 * 60 * 3000);
+  res.cookie("token", user.token,{ expires: expires });
   req.flash("success", "Đăng nhập thành công!");
   res.redirect(`${systemConfix.prefixAdmin}/dashboard`);
 };

@@ -24,6 +24,8 @@ header.header
                             a(href=pathProduct) Sản phẩm
                             +sub-menu(productCategory,pathProduct)
                         li  
-                            a(href="/cart")
+                            a(href="/cart" style="position: relative")
                                 i(class="fa-solid fa-cart-shopping fa-lg")
                                 span(class="cart-badge") #{miniCart ? miniCart.totalQuantity : 0}
+                        li  
+                            a(href="/user/auth") Đăng ký/Đăng nhập

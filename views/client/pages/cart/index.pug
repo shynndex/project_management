@@ -2,89 +2,87 @@ extends ../../layouts/defaults.pug
 include ../../mixins/box-head.pug
 include ../../mixins/alert.pug
 
+block content
   +alert-success(3000)
   +alert-error(3000)
-block content
 
   .container.py-5
     //- +box-head("Giỏ hàng")
-    .row.d-flex.justify-content-center.my-4
-      .col-md-8
-        // Cart items
-        .card.mb-4
-          .card-header.py-3
-            h5.mb-0 Giỏ hàng - #{cartDetail.products.length} Sản phẩm
-          .card-body
-            if(cartDetail.products.length > 0)
-              each item in cartDetail.products
-                .row
-                  .col-lg-3.col-md-12.mb-4.mb-lg-0
-                    .bg-image.hover-overlay.hover-zoom.ripple.rounded(data-mdb-ripple-color="light")
-                      img.w-100(src=item.productInfo.thumbnail, alt=item.productInfo.title)
-                      a(href="#!")
-                        .mask(style="background-color: rgba(251, 251, 251, 0.2)")
-                  .col-lg-5.col-md-6.mb-4.mb-lg-0
-                    a(href=`/products/detail/${item.productInfo.slug}` class="text-decoration-none") 
-                      p 
-                        strong #{item.productInfo.title}
-                    p Màu: blue
-                    p Kích thước: M
-                    p Giá :$#{item.productInfo.priceNew}
-                    a.btn.btn-primary.btn-sm.me-1.mb-2(href=`/cart/delete/${item.product_id}`, title="Remove item")
-                      i.fas.fa-trash
-                    button.btn.btn-danger.btn-sm.mb-2(type="button", title="Move to the wish list")
-                      i.fas.fa-heart
-                  .col-lg-4.col-md-6.mb-4.mb-lg-0
-                    .d-flex.mb-4(style="max-width: 300px")
-                      button.btn.btn-primary.px-3.me-2(onclick="let input = this.parentNode.querySelector('input[type=number]'); input.stepDown(); input.dispatchEvent(new Event('change'));")
-                        i.fas.fa-minus
-                      .form-floating
-                        input.form-control(type="number", name="quantity", value=item.quantity, product-id=item.product_id min="1")
-                        label.form-label Quantity
-                      button.btn.btn-primary.px-3.ms-2(onclick="let input = this.parentNode.querySelector('input[type=number]'); input.stepUp(); input.dispatchEvent(new Event('change'));")
-                        i.fas.fa-plus
-                    p.text-start.text-md-center
-                      strong $#{item.totalPrice}
-                hr.my-4
-            
-        // Shipping
-        .card.mb-4
-          .card-body
-            p
-              strong Expected shipping delivery
-            p.mb-0 12.10.2020 - 14.10.2020
-            
-        // Payment methods
-        .card.mb-4.mb-lg-0
-          .card-body
-            p
-              strong We accept
-            img.me-2(width="45px", src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg", alt="Visa")
-            img.me-2(width="45px", src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg", alt="American Express")
-            img.me-2(width="45px", src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg", alt="Mastercard")
-            img.me-2(width="45px", src="https://res.cloudinary.com/dntwqb6kj/image/upload/v1748877057/paypal-3384015_1920_czn3iy_e_background_removal_f_png_kgzdhy.png", alt="PayPal acceptance mark")
-            
-      // Cart summary
-      .col-md-4
-        .card.mb-4
-          .card-header.py-3
-            h5.mb-0 Summary
-          .card-body
-            ul.list-group.list-group-flush
-              li.list-group-item.d-flex.justify-content-between.align-items-center.border-0.px-0.pb-0
-                | Sản phẩm
-                span $#{cartDetail.totalPrice}
-              li.list-group-item.d-flex.justify-content-between.align-items-center.px-0
-                | Vận chuyển
-                span Miễn phí
-              li.list-group-item.d-flex.justify-content-between.align-items-center.border-0.px-0.mb-3
-                div
-                  strong Tổng thiệt hại
-                  strong
-                    p.mb-0 (Đã bao gồm VAT)
-                span
-                  strong $#{cartDetail.totalPrice}
-            a.btn.btn-primary.btn-lg.btn-block(href="/checkout") Thanh toán
+    if cartDetail.products.length > 0
+      .row.d-flex.justify-content-center.my-4
+        .col-md-8
+          .card.mb-4
+            .card-header.py-3
+              h5.mb-0 Giỏ hàng - #{cartDetail.products.length} Sản phẩm
+            .card-body
+              if cartDetail.products.length > 0
+                each item in cartDetail.products
+                  .row
+                    .col-lg-3.col-md-12.mb-4.mb-lg-0
+                      .bg-image.hover-overlay.hover-zoom.ripple.rounded(data-mdb-ripple-color="light")
+                        img.w-100(src=item.productInfo.thumbnail, alt=item.productInfo.title)
+                        a(href="#!")
+                          .mask(style="background-color: rgba(251, 251, 251, 0.2)")
+                    .col-lg-5.col-md-6.mb-4.mb-lg-0
+                      a(href=`/products/detail/${item.productInfo.slug}` class="text-decoration-none") 
+                        p 
+                          strong #{item.productInfo.title}
+                      p Màu: blue
+                      p Kích thước: M
+                      p Giá : $#{item.productInfo.priceNew}
+                      a.btn.btn-primary.btn-sm.me-1.mb-2(href=`/cart/delete/${item.product_id}`, title="Remove item")
+                        i.fas.fa-trash
+                      button.btn.btn-danger.btn-sm.mb-2(type="button", title="Move to the wish list")
+                        i.fas.fa-heart
+                    .col-lg-4.col-md-6.mb-4.mb-lg-0
+                      .d-flex.mb-4(style="max-width: 300px")
+                        button.btn.btn-primary.px-3.me-2(onclick="let input = this.parentNode.querySelector('input[type=number]'); input.stepDown(); input.dispatchEvent(new Event('change'));")
+                          i.fas.fa-minus
+                        .form-floating
+                          input.form-control(type="number", name="quantity", value=item.quantity, product-id=item.product_id, min="1")
+                          label.form-label Quantity
+                        button.btn.btn-primary.px-3.ms-2(onclick="let input = this.parentNode.querySelector('input[type=number]'); input.stepUp(); input.dispatchEvent(new Event('change'));")
+                          i.fas.fa-plus
+                      p.text-start.text-md-center
+                        strong $#{item.totalPrice}
+                  hr.my-4
+
+          .card.mb-4
+            .card-body
+              p
+                strong Expected shipping delivery
+              p.mb-0 12.10.2020 - 14.10.2020
+
+          .card.mb-4.mb-lg-0
+            .card-body
+              p
+                strong We accept
+              img.me-2(width="45px", src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg", alt="Visa")
+              img.me-2(width="45px", src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg", alt="American Express")
+              img.me-2(width="45px", src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg", alt="Mastercard")
+              img.me-2(width="45px", src="https://res.cloudinary.com/dntwqb6kj/image/upload/v1748877057/paypal-3384015_1920_czn3iy_e_background_removal_f_png_kgzdhy.png", alt="PayPal acceptance mark")
+
+        .col-md-4
+          .card.mb-4
+            .card-header.py-3
+              h5.mb-0 Summary
+            .card-body
+              ul.list-group.list-group-flush
+                li.list-group-item.d-flex.justify-content-between.align-items-center.border-0.px-0.pb-0
+                  | Sản phẩm
+                  span $#{cartDetail.totalPrice}
+                li.list-group-item.d-flex.justify-content-between.align-items-center.px-0
+                  | Vận chuyển
+                  span Miễn phí
+                li.list-group-item.d-flex.justify-content-between.align-items-center.border-0.px-0.mb-3
+                  div
+                    strong Tổng thiệt hại
+                    strong
+                      p.mb-0 (Đã bao gồm VAT)
+                  span
+                    strong $#{cartDetail.totalPrice}
+              a.btn.btn-primary.btn-lg.btn-block(href="/checkout") Thanh toán
+    else 
+      h2(class="text-center") Chưa có sản phẩm nào có trong giỏ hàng
 
   script(src="/js/cart.js")
-  

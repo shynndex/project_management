@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema(
     products: [
       {
         product_id: String,
-        quantity: Number,
+        price: Number,
         discountPercentage: Number,
         quantity: Number,
       },

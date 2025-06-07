@@ -1,11 +1,13 @@
 mixin alert-success(time) 
- - if (messages.success)
-        .message.info
-            div(class="alert alert-success" role="alert" show-alert data-time=time)  !{messages.success}
-                span(close-alert) x
+  if messages.success
+    .auth-alert.auth-alert--success(show-alert)
+      div(class="alert alert-success alert-dismissible fade show" role="alert" data-bs-dismiss="alert" data-time=time)
+        | !{messages.success}
+        button.btn-close(type="button" data-bs-dismiss="alert" aria-label="Close")
 
 mixin alert-error(time) 
- - if (messages.error)
-        .message.info
-            div(class="alert alert-danger" role="alert" show-alert data-time=time)  !{messages.error}
-                span(close-alert) x                                                                                         
+   if messages.error
+    .auth-alert.auth-alert--error(show-alert)
+      div(class="alert alert-danger alert-dismissible fade show" role="alert" data-bs-dismiss="alert" data-time=time)
+        | !{messages.error}
+        button.btn-close(type="button" data-bs-dismiss="alert" aria-label="Close")

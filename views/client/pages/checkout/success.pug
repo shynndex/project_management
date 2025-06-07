@@ -1,0 +1,95 @@
+extends ../../layouts/defaults.pug
+include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
+
+block content
+  .container.py-5
+    .row.justify-content-center.mb-4
+      .col-12.col-md-8.text-center
+        .alert.alert-success.border-0.shadow-sm.rounded-4.py-4
+          .mb-3
+            i.fas.fa-check-circle.text-success(style="font-size: 4rem;")
+          h1.fw-bold.mb-3.text-success Đặt hàng thành công!
+          p.mb-0.fs-5
+            | Cảm ơn bạn đã tin tưởng và đặt hàng! Đơn hàng của bạn đã được xác nhận 
+            | và sẽ được xử lý trong thời gian sớm nhất.
+
+    .row.justify-content-center
+      .col-12.col-lg-10
+        .row
+          // Thông tin người nhận
+          .col-md-6.mb-4
+            .card.h-100.shadow-sm.border-0.rounded-4
+              .card-header.bg-primary.text-white.py-3.rounded-top-4
+                h5.mb-0
+                  i.fas.fa-user.me-2
+                  | Thông tin người nhận
+              .card-body.p-4
+                .row.mb-3
+                  .col-4
+                    strong Họ và tên:
+                  .col-8 #{orderDetail.userInfo.fullName}
+                .row.mb-3
+                  .col-4
+                    strong Số điện thoại:
+                  .col-8 #{orderDetail.userInfo.phone}
+                .row.mb-3
+                  .col-4
+                    strong Địa chỉ:
+                  .col-8 #{orderDetail.userInfo.address}
+
+          // Thông tin đơn hàng
+          .col-md-6.mb-4
+            .card.h-100.shadow-sm.border-0.rounded-4
+              .card-header.bg-success.text-white.py-3.rounded-top-4
+                h5.mb-0
+                  i.fas.fa-shopping-cart.me-2
+                  | Chi tiết đơn hàng
+              .card-body.p-4
+                if orderDetail && orderDetail.products && orderDetail.products.length > 0
+                  each item, index in orderDetail.products
+                    .row.align-items-center.mb-3(class=index !== orderDetail.products.length - 1 ? 'border-bottom pb-3' : '')
+                      .col-3
+                        img.img-fluid.rounded(src=item.productInfo.thumbnail, alt=item.productInfo.title, style="max-height: 60px; object-fit: cover;")
+                      .col-9
+                        h6.mb-1.fw-bold #{item.productInfo.title}
+                        .row.text-muted.small
+                          .col-6 SL: #{item.quantity}
+                          .col-6.text-end $#{item.priceNew}
+                else
+                  p.text-muted.text-center Không có sản phẩm trong đơn hàng
+                
+                hr.my-3
+                .d-flex.justify-content-between.align-items-center
+                  h5.mb-0.fw-bold.text-primary Tổng tiền:
+                  h4.mb-0.fw-bold.text-success $#{orderDetail ? orderDetail.totalPrice : '0'}
+
+        // Nút hành động
+        .row.mt-4
+          .col-12.text-center
+            .d-flex.flex-column.flex-sm-row.justify-content-center.gap-3
+              a.btn.btn-primary.btn-lg.px-4.py-2.rounded-pill(href='/')
+                i.fas.fa-home.me-2
+                | Trở về trang chủ
+              a.btn.btn-outline-success.btn-lg.px-4.py-2.rounded-pill(href='/products')
+                i.fas.fa-shopping-bag.me-2
+                | Tiếp tục mua sắm
+
+        // Thông tin hỗ trợ
+        .row.mt-5
+          .col-12
+            .card.bg-light.border-0.rounded-4
+              .card-body.text-center.py-4
+                h6.fw-bold.mb-3 Bạn cần hỗ trợ?
+                p.text-muted.mb-3
+                  | Nếu bạn có bất kỳ thắc mắc nào về đơn hàng, vui lòng liên hệ với chúng tôi:
+                .row.justify-content-center
+                  .col-md-4.mb-2
+                    i.fas.fa-phone.text-primary.me-2
+                    | Hotline: 1900-1234
+                  .col-md-4.mb-2
+                    i.fas.fa-envelope.text-primary.me-2
+                    | Email: support@shop.com
+                  .col-md-4.mb-2
+                    i.fas.fa-clock.text-primary.me-2
+                    | 8:00 - 22:00 hàng ngày

@@ -1,0 +1,47 @@
+extends ../../layouts/defaults.pug
+include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
+
+block content
+  .container.py-5
+    +box-head("Đặt hàng")
+    if cartDetail.products.length > 0
+      .row.d-flex.justify-content-center.my-4
+        .col-md-7
+          .card.mb-4
+            .card-header.py-3
+              h5.mb-0 Sản phẩm
+            .card-body
+              each item in cartDetail.products
+                .row.mb-3
+                  .col-md-4
+                    img.w-100(src=item.productInfo.thumbnail, alt=item.productInfo.title)
+                  .col-md-8
+                    p
+                      strong #{item.productInfo.title}
+                    p Số lượng: #{item.quantity}
+                    p Giá: $#{item.productInfo.priceNew}
+                hr
+              .d-flex.justify-content-between.mb-1
+                h4 Tổng đơn hàng: 
+                h4 $#{cartDetail.totalPrice}
+
+
+        .col-md-5
+          .card.mb-4
+            .card-header.py-3
+              h5.mb-0 Thông tin thanh toán
+            .card-body
+              form(action="/checkout/order" method="POST")
+                .mb-3
+                  label(for="fullName") Họ và tên
+                  input.form-control(type="text" id="fullName" name="fullName" required)
+                .mb-3
+                  label(for="phone") Số điện thoại
+                  input.form-control(type="text" id="phone" name="phone" required)
+                .mb-3
+                  label(for="address") Địa chỉ
+                  textarea.form-control(id="address" name="address" required)
+
+                .d-flex.justify-content-end
+                  button.btn.btn-success(type="submit") Thanh toán

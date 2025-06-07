@@ -1,0 +1,100 @@
+extends ../../layouts/auth.pug
+include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
+
+block content  
+  // blue circle background
+  .d-none.d-md-block.ball.login.bg-primary.bg-gradient.position-absolute.rounded-circle
+
+  // logo name
+  .position-absolute.top-0.start-0.p-3
+    a.text-decoration-none.fw-bold.fs-5(href="/") Webland.
+
+  // Login Section
+  .container.login__form.active
+    .row.vh-100.w-100.align-self-center
+      .col-12.col-lg-6.col-xl-6.px-5
+        .row.vh-100
+          .col.align-self-center.p-5.w-100
+            h3.fw-bolder WELCOME BACK !
+            p.fw-lighter.fs-6 Don't have an account,
+              span#signUp.text-primary(role="button") Sign Up
+            // form login section
+            form.mt-5(action="/user/login" method="POST")
+              .mb-3
+                label.form-label(for="username") Email
+                input.form-control.text-indent.shadow-sm.bg-grey-light.border-0.rounded-pill.fw-lighter.fs-7.p-3(type="email" id="email" name="email" placeholder="name@example.com" required)
+              .mb-3
+                label.form-label(for="password") Password
+                .d-flex.position-relative
+                  input.form-control.text-indent.auth__password.shadow-sm.bg-grey-light.border-0.rounded-pill.fw-lighter.fs-7.p-3(type="password" id="password" name="password" required)
+                  span.password__icon.text-primary.fs-4.fw-bold.bi.bi-eye-slash
+              .col.text-center
+                button.btn.btn-outline-dark.btn-lg.rounded-pill.mt-4.w-100(type="submit") Login
+            p.mt-5.text-center Or Sign in with social platforms
+            .row.text-center
+              .col.mt-3
+                a.btn.btn-outline-dark.border-2.rounded-circle(href="#")
+                  i.bi.bi-facebook.fs-5
+              .col.mt-3
+                a.btn.btn-outline-dark.border-2.rounded-circle(href="#")
+                  i.bi.bi-linkedin.fs-5
+              .col.mt-3
+                a.btn.btn-outline-dark.border-2.rounded-circle(href="#")
+                  i.bi.bi-twitter.fs-5
+              .col.my-3
+                a.btn.btn-outline-dark.border-2.rounded-circle(href="#")
+                  i.bi.bi-google.fs-5
+
+      .d-none.d-lg-block.col-lg-6.col-xl-6.p-5
+        .row.vh-100.p-5
+          .col.align-self-center.p-5.text-center
+            img.bounce(src="https://res.cloudinary.com/dntwqb6kj/image/upload/v1749210752/login_sbzbli.png" alt="")
+
+  // Register Section
+  .container.register__form
+    .row.vh-100.w-100.align-self-center
+      .d-none.d-lg-block.col-lg-6.col-xl-6.p-5
+        .row.vh-100.p-5
+          .col.align-self-center.p-5.text-center
+            img.bounce(src="https://res.cloudinary.com/dntwqb6kj/image/upload/v1749210752/register_pzetc2.png" alt="")
+      .col-12.col-lg-6.col-xl-6.px-5
+        .row.vh-100
+          .col.align-self-center.p-5.w-100
+            h3.fw-bolder REGISTER HERE !
+            p.fw-lighter.fs-6 Have an account,
+              span#signIn.text-primary(role="button") Sign In
+            // form register section
+            form.mt-5(action="/user/register" method="POST")
+              .mb-3
+                label.form-label(for="fullName") Full Name
+                input.form-control.text-indent.shadow-sm.bg-grey-light.border-0.rounded-pill.fw-lighter.fs-7.p-3(type="text" id="fullName" name="fullName" placeholder="name1" required)
+              .mb-3
+                label.form-label(for="email") Email
+                input.form-control.text-indent.shadow-sm.bg-grey-light.border-0.rounded-pill.fw-lighter.fs-7.p-3(type="email" id="email" name="email" placeholder="name@example.com" required)
+              .mb-3
+                label.form-label(for="password") Password
+                .d-flex.position-relative
+                  input.form-control.text-indent.auth__password.shadow-sm.bg-grey-light.border-0.rounded-pill.fw-lighter.fs-7.p-3(type="password" id="password" name="password" required)
+                  span.password__icon.text-primary.fs-4.fw-bold.bi.bi-eye-slash
+              .col.text-center
+                button.btn.btn-outline-dark.btn-lg.rounded-pill.mt-4.w-100(type="submit") Sign Up
+            p.mt-5.text-center Or Sign in with social platforms
+            .row.text-center
+              .col.mt-3
+                a.btn.btn-outline-dark.border-2.rounded-circle(href="")
+                  i.bi.bi-facebook.fs-5
+              .col.mt-3
+                a.btn.btn-outline-dark.border-2.rounded-circle(href="")
+                  i.bi.bi-linkedin.fs-5
+              .col.mt-3
+                a.btn.btn-outline-dark.border-2.rounded-circle(href="")
+                  i.bi.bi-twitter.fs-5
+              .col.my-3
+                a.btn.btn-outline-dark.border-2.rounded-circle(href="")
+                  i.bi.bi-google.fs-5
+
+
+  +alert-error(2000)
+
+
