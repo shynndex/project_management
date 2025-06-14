@@ -111,8 +111,8 @@ module.exports.forgotPasswordPost = async (req, res) => {
   await forgotPassword.save();
 
   const subject = "Mã xác minh đổi mật khẩu";
-  const html = `<h3>Mã OTP của bạn là:</h3></br><h2><b>${otp}</b></h2><br>Mã này có hiệu lực trong 3 phút.<b>KHÔNG ĐƯỢC CHIA SẺ</b>`
-  sendMailHelper.sendMail(email,subject,html);
+  const html = `<h3>Mã OTP của bạn là:</h3></br><h2><b>${otp}</b></h2><br>Mã này có hiệu lực trong 3 phút.<b>KHÔNG ĐƯỢC CHIA SẺ</b>`;
+  sendMailHelper.sendMail(email, subject, html);
 
   res.redirect(`/user/password/otp/?email=${email}`);
 };
@@ -177,4 +177,25 @@ module.exports.resetPasswordPost = async (req, res) => {
 
   res.redirect("/");
   req.flash("error", "Email không tồn tại !");
+};
+
+//[GET] /user/info
+module.exports.info = async (req, res) => {
+  res.render("client/pages/user/info", {
+    title: "Thông tin tài khoản",
+  });
+};
+
+module.exports.infoUpdate = async (req, res) => {
+  const tokenUser = req.cookies.tokenUser;
+
+  await User.updateOne(
+    {
+      tokenUser: tokenUser,
+    },
+    req.body
+  );
+
+  req.flash("success", "Thay đổi thông tin thành công!");
+  res.redirect(req.get("Referer") || "/user/info");
 };

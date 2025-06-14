@@ -1,0 +1,50 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+
+block content
+  +alert-error(2000)
+  +alert-success(2000)
+  .container
+    .d-flex.justify-content-center.align-items-center.min-vh-100
+      .col-md-8.col-lg-6
+        .card.shadow-lg.border-0.rounded-4.p-4.position-relative
+          // Nút mũi tên trở về
+          a.btn.btn-light.rounded-circle.shadow.position-absolute.top-0.start-0.mt-3.ms-3(href="/" title="Trở về")
+            i.bi.bi-arrow-left.fs-4
+          .card-body
+            h3.text-center.text-primary.fw-bold.mb-4 Thông tin người dùng
+
+            form(action="/user/info/update" method="POST" enctype="multipart/form-data")
+              // Avatar
+              .mb-4.text-center
+                img.rounded-circle.shadow.mb-2(width="120" height="120" src=(user.avatar) alt="avatar")
+                br
+                label.btn.btn-outline-primary.rounded-pill.px-3(for="avatar") Thay ảnh đại diện
+                input#avatar(type="file" name="avatar" accept="image/*" class="d-none")
+              
+              // Họ tên
+              .mb-3
+                label.form-label(for="fullName") Họ và tên
+                input#fullName.form-control.rounded-pill.p-3(type="text" name="fullName" value=user.fullName required)
+
+              // Email (disable nếu không cho sửa)
+              .mb-3
+                label.form-label(for="email") Email
+                input#email.form-control.rounded-pill.p-3(type="email" name="email" value=user.email readonly)
+
+              // Số điện thoại
+              .mb-3
+                label.form-label(for="phone") Số điện thoại
+                input#phone.form-control.rounded-pill.p-3(type="text" name="phone" value=user.phone)
+
+              // Trạng thái tài khoản
+              .mb-3
+                label.form-label Trạng thái
+                if user.status == 'active'
+                  span.badge.bg-success.text-white.mx-2 Đang hoạt động
+                else
+                  span.badge.bg-secondary.text-white.mx-2 Không hoạt động
+
+              // Button lưu
+              .d-flex.justify-content-center.mt-4
+                button.btn.btn-primary.rounded-pill.px-4.mx-2(type="submit") Lưu thay đổi
