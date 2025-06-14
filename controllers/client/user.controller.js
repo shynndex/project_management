@@ -4,6 +4,7 @@ const ForgotPassword = require("../../models/forgot-password.model");
 const md5 = require("md5");
 const generateHelper = require("../../helpers/generate");
 const sendMailHelper = require("../../helpers/sendMail");
+const Cart = require("../../models/cart.model");
 
 //[GET] /user/auth
 module.exports.auth = (req, res) => {
@@ -62,6 +63,15 @@ module.exports.loginPost = async (req, res) => {
       res.redirect(req.get("Referer") || "/user/auth");
       return;
     }
+
+    await Cart.updateOne(
+      {
+        _id: req.cookies.cartId,
+      },
+      {
+        user_id: user.id,
+      }
+    );
 
     const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 ngày
     res.cookie("tokenUser", user.tokenUser, { expires });

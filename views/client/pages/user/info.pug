@@ -17,7 +17,7 @@ block content
             form(action="/user/info/update" method="POST" enctype="multipart/form-data")
               // Avatar
               .mb-4.text-center
-                img.rounded-circle.shadow.mb-2(width="120" height="120" src=(user.avatar) alt="avatar")
+                img.rounded-circle.shadow.mb-2(width="120" height="120" src=user.avatar alt="avatar")
                 br
                 label.btn.btn-outline-primary.rounded-pill.px-3(for="avatar") Thay ảnh đại diện
                 input#avatar(type="file" name="avatar" accept="image/*" class="d-none")
