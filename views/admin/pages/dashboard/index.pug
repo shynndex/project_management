@@ -1,11 +1,252 @@
 extends ../../layouts/defaults.pug
 include ../../mixins/alert.pug
 
-block content 
-    +alert-success(5000)
-    h1 Trang tổng quan admin
+block content
+  +alert-success(3000)
+  .alert.alert-success.alert-custom.alert-dismissible.fade.show.m-3(role="alert" id="successAlert")
+    i.fas.fa-check-circle.me-2
+    | Chào mừng bạn đến với trang quản trị!
+    button.btn-close(type="button" data-bs-dismiss="alert")
 
-    div #{user}
-    div ----------------
-    div #{role.title}
-    div #{role.permissions}
+  .main-content
+    h1.header-title.mb-4 Trang tổng quan admin
+
+    .row.mb-4
+      .col-xl-3.col-md-6.mb-4
+        .card.stat-card
+          .card-body
+            .d-flex.justify-content-between
+              .text
+                h6.card-title.text-uppercase.mb-1 Tổng người dùng
+                h3.mb-0 1,234
+              i.fas.fa-users.fa-2x.opacity-75.align-self-center
+            small.text-dark
+              i.fas.fa-arrow-up.me-1
+              | 12% từ tháng trước
+
+      .col-xl-3.col-md-6.mb-4
+        .card.stat-card-success
+          .card-body
+            .d-flex.justify-content-between
+              .text
+                h6.card-title.text-uppercase.mb-1 Đơn hàng
+                h3.mb-0 5,678
+              i.fas.fa-shopping-cart.fa-2x.opacity-75.align-self-center
+            small.text-dark
+              i.fas.fa-arrow-up.me-1
+              | 8% từ tháng trước
+
+      .col-xl-3.col-md-6.mb-4
+        .card.stat-card-warning
+          .card-body
+            .d-flex.justify-content-between
+              .text
+                h6.card-title.text-uppercase.mb-1 Doanh thu
+                h3.mb-0 ₫89.5M
+              i.fas.fa-chart-line.fa-2x.opacity-75.align-self-center
+            small.text-dark
+              i.fas.fa-arrow-up.me-1
+              | 15% từ tháng trước
+
+      .col-xl-3.col-md-6.mb-4
+        .card.stat-card-info
+          .card-body
+            .d-flex.justify-content-between
+              .text
+                h6.card-title.text-uppercase.mb-1 Sản phẩm
+                h3.mb-0 324
+              i.fas.fa-box.fa-2x.opacity-75.align-self-center
+            small.text-dark
+              i.fas.fa-arrow-up.me-1
+              | 5% từ tháng trước
+
+    // Hàng 1: Biểu đồ và thao tác nhanh
+    .row
+      .col-lg-8.mb-4
+        .card
+          .card-header.bg-white
+            h5.card-title.mb-0
+              i.fas.fa-chart-area.me-2.text-primary
+              | Biểu đồ doanh thu
+          .card-body
+            canvas#revenueChart(height="100")
+      .col-lg-4.mb-4
+        .card
+          .card-header.bg-white
+            h5.card-title.mb-0
+              i.fas.fa-bolt.me-2.text-warning
+              | Thao tác nhanh
+          .card-body
+            .d-grid.gap-2
+              a.btn.btn-primary.btn-custom(href="/admin/accounts")
+                i.fas.fa-plus.me-2
+                | Thêm người dùng
+              a.btn.btn-success.btn-custom(href="/admin/products")
+                i.fas.fa-box.me-2
+                | Thêm sản phẩm
+              a.btn.btn-info.btn-custom(href="/admin/roles/permissions")
+                i.fas.fa-file-alt.me-2
+                | Phân quyền
+              a.btn.btn-warning.btn-custom(href="/admin/settings/general")
+                i.fas.fa-cogs.me-2
+                | Cấu hình hệ thống
+
+    // Hàng 2: Thống kê nhỏ 4 box
+    .row
+      .col-md-6.col-lg-3.mb-4
+        .card.shadow-sm
+          .card-header.bg-light.text-center
+            strong Danh mục sản phẩm
+          .card-body.text-center
+            p Số lượng:
+              b #{statistic.categoryProduct.total}
+            p Hoạt động:
+              b #{statistic.categoryProduct.active}
+            p Dừng hoạt động:
+              b #{statistic.categoryProduct.inactive}
+
+      .col-md-6.col-lg-3.mb-4
+        .card.shadow-sm
+          .card-header.bg-light.text-center
+            strong Sản phẩm
+          .card-body.text-center
+            p Số lượng:
+              b #{statistic.product.total}
+            p Hoạt động:
+              b #{statistic.product.active}
+            p Dừng hoạt động:
+              b #{statistic.product.inactive}
+
+      .col-md-6.col-lg-3.mb-4
+        .card.shadow-sm
+          .card-header.bg-light.text-center
+            strong Tài khoản admin
+          .card-body.text-center
+            p Số lượng:
+              b #{statistic.account.total}
+            p Hoạt động:
+              b #{statistic.account.active}
+            p Dừng hoạt động:
+              b #{statistic.account.inactive}
+
+      .col-md-6.col-lg-3.mb-4
+        .card.shadow-sm
+          .card-header.bg-light.text-center
+            strong Tài khoản client
+          .card-body.text-center
+            p Số lượng:
+              b #{statistic.user.total}
+            p Hoạt động:
+              b #{statistic.user.active}
+            p Dừng hoạt động:
+              b #{statistic.user.inactive}
+
+    // Hàng 3: Bảng hoạt động gần đây
+    .row
+      .col-12
+        .card
+          .card-header.bg-white.d-flex.justify-content-between.align-items-center
+            h5.card-title.mb-0
+              i.fas.fa-history.me-2.text-info
+              | Hoạt động gần đây
+            button.btn.btn-outline-primary.btn-sm.btn-custom Xem tất cả
+          .card-body
+            .table-responsive
+              table.table.table-hover
+                thead.table-light
+                  tr
+                    th ID
+                    th Người dùng
+                    th Hoạt động
+                    th Thời gian
+                    th Trạng thái
+                    th Thao tác
+                tbody
+                  tr
+                    td #001
+                    td
+                      .d-flex.align-items-center
+                        .avatar-sm.bg-primary.rounded-circle.d-flex.align-items-center.justify-content-center.me-2
+                          i.fas.fa-user.text-white
+                        | Nguyễn Văn A
+                    td Đặt hàng mới
+                    td 5 phút trước
+                    td
+                      span.badge.bg-success Thành công
+                    td
+                      button.btn.btn-sm.btn-outline-primary Xem
+                  tr
+                    td #002
+                    td
+                      .d-flex.align-items-center
+                        .avatar-sm.bg-info.rounded-circle.d-flex.align-items-center.justify-content-center.me-2
+                          i.fas.fa-user.text-white
+                        | Trần Thị B
+                    td Cập nhật hồ sơ
+                    td 10 phút trước
+                    td
+                      span.badge.bg-info Đang xử lý
+                    td
+                      button.btn.btn-sm.btn-outline-primary Xem
+                  tr
+                    td #003
+                    td
+                      .d-flex.align-items-center
+                        .avatar-sm.bg-warning.rounded-circle.d-flex.align-items-center.justify-content-center.me-2
+                          i.fas.fa-user.text-white
+                        | Lê Văn C
+                    td Hủy đơn hàng
+                    td 15 phút trước
+                    td
+                      span.badge.bg-danger Đã hủy
+                    td
+                      button.btn.btn-sm.btn-outline-primary Xem
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js")
+
+  script.
+    setTimeout(function() {
+      const alert = document.getElementById('successAlert');
+      if (alert) {
+        const bsAlert = new bootstrap.Alert(alert);
+        bsAlert.close();
+      }
+    }, 5000);
+
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+        datasets: [{
+          label: 'Doanh thu (triệu VNĐ)',
+          data: [12, 19, 15, 25, 22, 30, 28, 35, 32, 40, 38, 45],
+          borderColor: 'rgb(102, 126, 234)',
+          backgroundColor: 'rgba(102, 126, 234, 0.1)',
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0,0,0,0.1)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
