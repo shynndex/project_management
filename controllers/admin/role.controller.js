@@ -29,7 +29,7 @@ module.exports.createPost = async (req, res) => {
     req.flash("success", "Thêm danh mục thành công!");
     res.redirect(`${systemConfix.prefixAdmin}/roles`);
   } catch (error) {
-    req.flash("error", "Đã xảy ra lỗi khi thêm sản phẩm!");
+    req.flash("error", "Đã xảy ra lỗi khi thêm nhóm quyền!");
     res.redirect(`${systemConfix.prefixAdmin}/roles`);
   }
 };

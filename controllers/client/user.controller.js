@@ -8,9 +8,13 @@ const Cart = require("../../models/cart.model");
 
 //[GET] /user/auth
 module.exports.auth = (req, res) => {
-  res.render("client/pages/user/auth", {
-    title: "Đăng nhập",
-  });
+  if (req.cookies.tokenUser) {
+    res.redirect("/");
+  } else {
+    res.render("client/pages/user/auth", {
+      title: "Đăng nhập",
+    });
+  }
 };
 
 //[POST] /user/register
@@ -64,14 +68,22 @@ module.exports.loginPost = async (req, res) => {
       return;
     }
 
-    await Cart.updateOne(
-      {
-        _id: req.cookies.cartId,
-      },
-      {
-        user_id: user.id,
-      }
-    );
+    const cart = await Cart.findOne({
+      user_id: user.id,
+    });
+
+    if (cart) {
+      res.cookie("cartId", cart.id);
+    } else {
+      await Cart.updateOne(
+        {
+          _id: req.cookies.cartId,
+        },
+        {
+          user_id: user.id,
+        }
+      );
+    }
 
     const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 ngày
     res.cookie("tokenUser", user.tokenUser, { expires });
@@ -84,6 +96,8 @@ module.exports.loginPost = async (req, res) => {
 //[GET] /user/logout
 module.exports.logout = async (req, res) => {
   res.clearCookie("tokenUser");
+  res.clearCookie("cartId");
+
   res.redirect("/");
 };
 
