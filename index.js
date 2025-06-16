@@ -34,9 +34,8 @@ const port = process.env.PORT || 3000;
 //Socket IO
 const server = createServer(app);
 const io = new Server(server);
-io.on("connection", (socket) => {
-  console.log("a user connected:", socket.id);
-});
+//Đặt thành biến global
+global._io=io;
 //End Socket IO
 
 

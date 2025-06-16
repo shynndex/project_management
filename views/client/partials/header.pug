@@ -27,6 +27,9 @@ header.header
                             a(href="/cart", style="position: relative")
                                 i.fa-solid.fa-cart-shopping.fa-lg
                                 span.cart-badge #{miniCart ? miniCart.totalQuantity : 0}
+                                 li
+                            a(href="/messages", title="Tin nhắn")
+                                i.fa-solid.fa-message.fa-lg(style="color: #FF8787")
                         if user
                             li.user-dropdown.btn-group
                                 button.btn.dropdown-toggle-no-caret(
