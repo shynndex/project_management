@@ -1,6 +1,11 @@
 require("dotenv").config(); // Load biến môi trường từ file .env
 
 const express = require("express");
+const { createServer } = require("node:http");
+
+const { join } = require("node:path");
+
+const { Server } = require("socket.io");
 
 const path = require("path");
 
@@ -25,6 +30,15 @@ const routeAdmin = require("./routes/admin/index.route");
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+//Socket IO
+const server = createServer(app);
+const io = new Server(server);
+io.on("connection", (socket) => {
+  console.log("a user connected:", socket.id);
+});
+//End Socket IO
+
 
 app.use(methodOverride("_method"));
 
@@ -71,7 +85,7 @@ app.use((req, res, next) => {
   });
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
