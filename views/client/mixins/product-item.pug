@@ -3,10 +3,9 @@ mixin product-item(item)
         .product-item 
             a(href=`/products/detail/${item.slug}`) 
                 .inner-images
-                    img(src=item.thumbnail, 
-                    alt=item.title)
-                    if(item.featured == "1")
-                    .inner-featured Nổi bật
+                    img(src=item.thumbnail, alt=item.title)
+                    if item.featured == "1"
+                        .inner-featured Nổi bật
                 .inner-content 
                     h3.inner-title #{item.title}
                     .inner-price-new #{item.priceNew}$

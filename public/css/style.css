@@ -432,3 +432,112 @@
 
 
 /*End Button back */
+
+
+/* chat */
+.chat {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 20px 20px 10px 20px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inner-body {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.inner-incoming, .inner-outgoing {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inner-name {
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 3px;
+  color: #222;
+}
+
+.inner-incoming .inner-content {
+  background: #ececec;
+  color: #222;
+  padding: 10px 18px;
+  border-radius: 12px;
+  max-width: 70%;
+  width: fit-content;
+  margin-bottom: 3px;
+  font-size: 15px;
+  /* Bong bóng bên trái */
+  border-top-left-radius: 4px;
+}
+
+.inner-outgoing {
+  align-items: flex-end;
+}
+
+.inner-outgoing .inner-content {
+  background: #e84889;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 16px;
+  max-width: 70%;
+  width: fit-content;
+  font-size: 15px;
+  margin-bottom: 3px;
+  /* Bong bóng bên phải */
+  border-top-right-radius: 4px;
+}
+
+.inner-foot {
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  margin-top: 6px;
+}
+
+.inner-form {
+  display: flex;
+  align-items: center;
+}
+
+.inner-form input[type="text"] {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  background: #f6f6f6;
+  margin-right: 8px;
+}
+
+.inner-form button {
+  background: #e84889;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 18px;
+  margin-left: 2px;
+  box-shadow: 0 2px 8px rgba(232, 72, 137, 0.12);
+}
+
+.inner-form button:hover {
+  background: #cf3272;
+}
+
+/* end chat */
