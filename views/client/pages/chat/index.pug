@@ -18,11 +18,20 @@ block content
                 .inner-content
                   | #{chat.content}
           .inner-foot
-            form(class="inner-form", action="")
-              input(
-                type="text"
-                placeholder="Nhập nội dung..."
-                name="content"
-              )
+            form.inner-form(action="")
+              .input-group
+                input(
+                  type="text"
+                  placeholder="Nhập nội dung..."
+                  name="content"
+                  style="padding-right: 36px"
+                  autocomplete="off"
+                )
+                span.button-icon
+                  i.fa-solid.fa-face-smile(style="color: #B197FC; cursor: pointer;")
               button
                 i.fa-solid.fa-paper-plane
+
+
+  div(class="tooltip" role="tooltip")
+   emoji-picker(class="light")
