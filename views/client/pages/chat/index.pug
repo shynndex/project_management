@@ -6,7 +6,7 @@ block content
     +box-head("Chat")
     .row
       .col-12
-        .chat
+        .chat(my-id=user.id)
           .inner-head
             //- .inner-avatar EY
             //- .inner-name Em Yêu
@@ -17,20 +17,6 @@ block content
                   .inner-name #{chat.infoUser.fullName}
                 .inner-content
                   | #{chat.content}
-            //- .inner-outgoing
-            //-   .inner-content
-            //-     | Thế à? Ok e iu
-            //- .inner-incoming
-            //-   .inner-name Em Yêu
-            //-   .inner-content
-            //-     | Nhanh nha nhanh nha
-            //- .inner-outgoing
-            //-   .inner-content
-            //-     | Ck đến rồi mà thấy ai ở nhà đâu e? Khóa cửa mà :(
-            //- .inner-incoming
-            //-   .inner-name Em Yêu
-            //-   .inner-content
-            //-     | Thì em báo nhà e không ai ở nhà mà :))
           .inner-foot
             form(class="inner-form", action="")
               input(

@@ -4,14 +4,24 @@ const User = require("../../models/user.model");
 //[GET] /chat
 module.exports.index = async (req, res) => {
   const userId = res.locals.user.id;
+  const fullName = res.locals.user.fullName;
+
   // SocketIO
   _io.once("connection", (socket) => {
     socket.on("CLIENT_SEND_MESSAGE", async (content) => {
+      //Lưu vào db
       const chat = new Chat({
         user_id: userId,
         content: content,
       });
       await chat.save();
+
+      //Trả data realtime
+      _io.emit("SERVER_RETURN_MESSAGE", {
+        userId: userId,
+        fullName: fullName,
+        content: content,
+      });
     });
   });
   //End SocketIO
@@ -29,6 +39,6 @@ module.exports.index = async (req, res) => {
 
   res.render("client/pages/chat/index", {
     title: "Chat",
-    chats:chats,
+    chats: chats,
   });
 };

@@ -447,26 +447,27 @@
   justify-content: space-between;
 }
 
-.inner-body {
+.chat .inner-body {
   flex: 1;
   overflow-y: auto;
+  max-height: 450px;
   margin-bottom: 12px;
 }
 
-.inner-incoming, .inner-outgoing {
+.chat .inner-incoming, .inner-outgoing {
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;
 }
 
-.inner-name {
+.chat .inner-body .inner-name {
   font-weight: bold;
   font-size: 15px;
   margin-bottom: 3px;
   color: #222;
 }
 
-.inner-incoming .inner-content {
+.chat .inner-incoming .inner-content {
   background: #ececec;
   color: #222;
   padding: 10px 18px;
