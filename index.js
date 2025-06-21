@@ -33,7 +33,9 @@ const port = process.env.PORT || 3000;
 
 //Socket IO
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server,{
+  maxHttpBufferSize: 2e7 
+});
 //Đặt thành biến global
 global._io=io;
 //End Socket IO

@@ -1,6 +1,8 @@
-html, body {
+html,
+body {
     overflow-x: hidden !important;
 }
+
 /* Header */
 
 .header {
@@ -450,6 +452,9 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 75vh;
+    max-height: 600px; 
+    min-height: 400px; 
 }
 
 .chat .inner-body {
@@ -512,6 +517,7 @@ html, body {
 .inner-form {
     display: flex;
     align-items: center;
+    gap: 8px;
 }
 
 .inner-form input[type="text"] {
@@ -537,15 +543,48 @@ html, body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s;
-    font-size: 18px;
-    margin-left: 2px;
-    box-shadow: 0 2px 8px rgba(232, 72, 137, 0.12);
+    margin-left: 4px;
 }
 
 .inner-form button:hover {
     background: #cf3272;
 }
+
+.chat .inner-body .inner-images img {
+    max-width: 100%;
+    max-height: 320px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f2f3f5;
+    margin-bottom: 8px;
+    display: block;
+    cursor: pointer;
+}
+
+
+.chat .inner-body .inner-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 80%;
+}
+
+
+.chat .inner-body .inner-outgoing .inner-images {
+    margin-left: auto;
+    justify-content: flex-end;
+}
+
+.chat .inner-body .inner-incoming .inner-images {
+    margin-right: auto;
+    justify-content: flex-start;
+}
+
+
 
 /* end chat */
 
@@ -569,86 +608,128 @@ html, body {
 }
 
 .inner-foot .input-group {
-    position: relative;
-    width: 100%;
+     display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f6f6f6;
+    border-radius: 20px;
+    padding: 0 10px;
+    flex: 1 1 auto;     /* cho phép co dãn */
+    min-width: 0;        /* Bo tròn giống input Messenger */
 }
 
 .inner-foot .button-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+     display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;      /* không co nhỏ */
     cursor: pointer;
-    z-index: 10;
-    /* Để hiệu ứng tròn nằm đúng */
+    border-radius: 50%;
+    background: none;
+}
+
+.input-group .button-icon:hover {
+    background: rgba(81, 70, 110, 0.1);
+}
+
+.input-group input[type="text"] {
+    flex: 1 1 auto;
+    min-width: 40px;
+    max-width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    padding: 10px 0;
+    color: #222;
+}
+/*End Emoji */
+
+/* Button Image */
+
+.inner-foot .button-image{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;   /* chỉnh lại tùy kích cỡ icon */
-    height: 36px;
-}
-
-
-.inner-foot .button-icon::before {
-    content: "";
-    position: absolute;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
     border-radius: 50%;
-    background: rgba(89, 79, 79, 0.2); /* màu tím mờ, tùy chỉnh lại */
-    opacity: 0;
-    transition: opacity 0.2s, box-shadow 0.2s;
-    z-index: 1;
-    pointer-events: none;
+    /* margin-right: 6px; */
 }
 
-.inner-foot .button-icon:hover::before {
-    opacity: 1;
-    box-shadow: 0 0 8px 8px rgba(180,151,252,0.10);
+.inner-foot .button-image:hover{
+    background: rgba(81, 70, 110, 0.1);
 }
 
-/*End Emoji */
+/*End Button Image */
+
+/* File-preview */
+.chat .inner-preview-images .label-container{
+    display: none;
+}
+
+.chat .inner-preview-images .input-container{
+    display: none;
+}
+
+.chat .inner-preview-images .image-preview{
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+}
+.chat .inner-preview-images .image-preview-item{
+    width: 90px;
+    background-size: contain;
+}
+/*End File-preview */
+
 
 /* Typing */
 .inner-dots {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: #ececec;
-  border-radius: 8px;
-  padding: 10px 18px;
-  width: fit-content;     
-  border-top-left-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #ececec;
+    border-radius: 8px;
+    padding: 10px 18px;
+    width: fit-content;
+    border-top-left-radius: 4px;
 }
 
 .inner-dots span {
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #a0a0a0; 
-  opacity: 0.8;
-  animation: typing-bounce 1s infinite;
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #a0a0a0;
+    opacity: 0.8;
+    animation: typing-bounce 1s infinite;
 }
 
 .inner-dots span:nth-child(2) {
-  animation-delay: 0.2s;
+    animation-delay: 0.2s;
 }
+
 .inner-dots span:nth-child(3) {
-  animation-delay: 0.4s;
+    animation-delay: 0.4s;
 }
 
 @keyframes typing-bounce {
-  0%, 80%, 100% {
-    transform: translateY(0);
-    opacity: 0.8;
-  }
-  40% {
-    transform: translateY(-8px);
-    opacity: 1;
-  }
+
+    0%,
+    80%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.8;
+    }
+
+    40% {
+        transform: translateY(-8px);
+        opacity: 1;
+    }
 }
 
 
