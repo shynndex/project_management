@@ -159,7 +159,6 @@ body {
 /* Sub menu */
 .sub-menu {
     position: relative;
-    z-index: 9999;
 }
 
 .sub-menu ul {
@@ -734,3 +733,11 @@ body {
 
 
 /* End Typing */
+
+
+/* View JS */
+
+.viewer-tooltip{
+    display: none;
+}
+/*End View JS */

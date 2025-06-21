@@ -1,6 +1,5 @@
 import * as Popper from "https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js";
 
-
 // file-upload-with-preview
 const upload = new FileUploadWithPreview.FileUploadWithPreview(
   "upload-images",
@@ -63,7 +62,6 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
     htmlImage += `</div>`;
   }
 
-
   div.innerHTML = `
   ${htmlFullname}
   ${htmlContent}
@@ -72,6 +70,11 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
 
   body.insertBefore(div, boxTyping);
   body.scrollTop = body.scrollHeight;
+  setTimeout(() => {
+    body.scrollTop = body.scrollHeight;
+  }, 400);
+
+  fullImagePreview(div);
 });
 //End SERVER_RETURN_MESSAGE
 
@@ -190,3 +193,34 @@ if (elementListTyping) {
 }
 
 //End SERVER_RETURN_TYPING
+
+const fullImagePreview = (bodyChat) => {
+  if (bodyChat) {
+    const gallery = new Viewer(bodyChat, {
+      // Chỉ các thẻ img bên trong mới được zoom
+      navbar: true,
+      toolbar: {
+        prev: true,
+        next: true,
+      },
+      title: false,
+      movable: false,
+      scalable: false,
+      zoomable: true,
+      rotatable: false,
+      transition: true,
+      fullscreen: false,
+      loop: true,
+      zoomOnWheel: true,
+      slideOnTouch: true,
+      toggleOnDblclick: true,
+    });
+  }
+};
+//Full Image
+// mediumZoom('.chat .inner-body img');
+const bodyChatPreviewImage = document.querySelector(".chat .inner-body");
+
+fullImagePreview(bodyChatPreviewImage);
+
+//End Full Image
