@@ -62,7 +62,7 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
     });
     htmlImage += `</div>`;
   }
-  window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+
 
   div.innerHTML = `
   ${htmlFullname}
