@@ -5,7 +5,7 @@ block content
   .container.my-3
   
     include ../../partials/list-btn-users.pug
-    +box-head("Danh sách người dùng")
+    +box-head("Lời mời đã nhận")
   
     .row  
       each user in users
@@ -16,8 +16,9 @@ block content
             div(class="inner-info")
               div(class="inner-name") #{user.fullName}
               div(class="inner-button")
-                button(class="btn btn-sm btn-primary me-1" btn-add-friend=user.id) Kết bạn
-                button(class="btn btn-sm btn-secondary me-1" btn-cancel-friend=user.id) Hủy
+                button(class="btn btn-sm btn-primary me-1" btn-accept-friend=user.id) Chấp nhận
+                button(class="btn btn-sm btn-secondary me-1" btn-refuse-friend=user.id) Xóa
+                button(class="btn btn-sm btn-secondary me-1" btn-deleted-friend disabled) Đã Xóa
 
 block script 
   script(src="/js/users.js") 

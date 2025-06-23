@@ -4,8 +4,6 @@ module.exports = (res) => {
   _io.once("connection", (socket) => {
     socket.on("CLIENT_ADD_FRIEND", async (friendId) => {
       const userId = res.locals.user.id;
-
-      console.log(friendId);
       //Thêm id của A vào acceptFriend của B
 
       const existAcceptFriend = await User.findOne({
@@ -74,6 +72,43 @@ module.exports = (res) => {
           },
           {
             $pull: { requestFriends: friendId },
+          }
+        );
+      }
+    });
+
+     socket.on("CLIENT_REFUSE_FRIEND", async (friendId) => {
+      const userId = res.locals.user.id;
+      //Xóa id của B vào acceptFriend của A
+      const existAcceptFriend = await User.findOne({
+        _id: userId,
+        acceptFriends: friendId,
+      });
+
+      if (existAcceptFriend) {
+        await User.updateOne(
+          {
+            _id: userId,
+          },
+          {
+            $pull: { acceptFriends: friendId },
+          }
+        );
+      }
+
+      //Xóa id của A vào requestFriends của B
+      const existRequestFriends = await User.findOne({
+        _id: friendId,
+        requestFriends:  userId,
+      });
+
+      if (existRequestFriends) {
+        await User.updateOne(
+          {
+            _id: friendId,
+          },
+          {
+            $pull: { requestFriends: userId },
           }
         );
       }
