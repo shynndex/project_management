@@ -6,9 +6,24 @@ if (listBtnAddFriend.length > 0) {
       button.closest(".box-user").classList.add("add");
 
       const userId = button.getAttribute("btn-add-friend");
-      
-      socket.emit("CLIENT_ADD_FRIEND",userId)
+
+      socket.emit("CLIENT_ADD_FRIEND", userId);
     });
   });
 }
 // End Send request
+
+// Cancel request
+const listBtnCancelFriend = document.querySelectorAll("[btn-cancel-friend]");
+if (listBtnCancelFriend.length > 0) {
+  listBtnCancelFriend.forEach((button) => {
+    button.addEventListener("click", () => {
+      button.closest(".box-user").classList.remove("add");
+
+      const userId = button.getAttribute("btn-cancel-friend");
+
+      socket.emit("CLIENT_CANCEL_FRIEND", userId);
+    });
+  });
+}
+// End Cancel request
