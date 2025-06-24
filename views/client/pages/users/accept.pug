@@ -7,7 +7,7 @@ block content
     include ../../partials/list-btn-users.pug
     +box-head("Lời mời đã nhận")
   
-    .row  
+    .row(data-user-accept=user.id)
       each user in users
         .col-4
           div(class="box-user")

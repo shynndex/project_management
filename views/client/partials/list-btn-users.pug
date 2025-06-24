@@ -3,4 +3,6 @@
         a(href="/users/not-friend" class="btn btn-primary m-1") Danh sách người dùng
         a(href="/users/friends" class="btn btn-primary m-1") Danh sách bạn bè
         a(href="/users/request" class="btn btn-primary m-1") Lời mời đã gửi
-        a(href="/users/accept" class="btn btn-primary m-1") Lời mời kết bạn
+        a(href="/users/accept" class="btn btn-primary m-1 position-relative") 
+            | Lời mời kết bạn
+            span(class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary" badge-users-accept=user.id) #{user.acceptFriends.length}

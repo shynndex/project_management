@@ -38,6 +38,28 @@ module.exports = (res) => {
           }
         );
       }
+
+      //Lấy ra acceptFriends của B và hiện ra giao diện
+
+      const infoUserFriend = await User.findOne({
+        _id: friendId,
+      });
+
+      const lengthAcceptFriends = infoUserFriend.acceptFriends.length;
+
+      socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+        friendId: friendId,
+        lengthAcceptFriends: lengthAcceptFriends,
+      });
+
+      const infoUser = await User.findOne({
+        _id: userId,
+      }).select("id avatar fullName");
+
+      socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT_FRIEND", {
+        friendId: friendId,
+        infoUser: infoUser,
+      });
     });
 
     socket.on("CLIENT_CANCEL_FRIEND", async (friendId) => {
@@ -75,6 +97,16 @@ module.exports = (res) => {
           }
         );
       }
+      const infoUserFriend = await User.findOne({
+        _id: friendId,
+      });
+
+      const lengthAcceptFriends = infoUserFriend.acceptFriends.length;
+
+      socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+        friendId: friendId,
+        lengthAcceptFriends: lengthAcceptFriends,
+      });
     });
 
     socket.on("CLIENT_REFUSE_FRIEND", async (friendId) => {
