@@ -87,6 +87,14 @@ module.exports.loginPost = async (req, res) => {
 
     const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 ngày
     res.cookie("tokenUser", user.tokenUser, { expires });
+    await User.updateOne(
+      {
+        tokenUser: user.tokenUser,
+      },
+      {
+        statusOnline: "online",
+      }
+    );
     res.redirect("/");
   } catch (error) {
     console.log(error);
@@ -95,6 +103,14 @@ module.exports.loginPost = async (req, res) => {
 
 //[GET] /user/logout
 module.exports.logout = async (req, res) => {
+  await User.updateOne(
+    {
+      tokenUser: req.cookies.tokenUser,
+    },
+    {
+      statusOnline: "offline",
+    }
+  );
   res.clearCookie("tokenUser");
   res.clearCookie("cartId");
 

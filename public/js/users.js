@@ -78,10 +78,11 @@ if (badgeUsersAccept) {
 // End SERVER_RETURN_LENGTH_ACCEPT_FRIEND
 
 // SERVER_RETURN_INFO_ACCEPT_FRIEND
-const dataUserAccept = document.querySelector("[data-users-accept]");
-if (dataUserAccept) {
-  const userId = dataUserAccept.getAttribute("data-users-accept");
-  socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
+socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
+  //Trang lời mời đã nhận
+  const dataUserAccept = document.querySelector("[data-users-accept]");
+  if (dataUserAccept) {
+    const userId = dataUserAccept.getAttribute("data-users-accept");
     if (userId === data.friendId) {
       const div = document.createElement("div");
       div.classList.add("col-4");
@@ -135,8 +136,22 @@ if (dataUserAccept) {
       refuseFriend(buttonRefuse);
       acceptFriend(buttonAccept);
     }
-  });
-}
+  }
+
+  //Trang danh sách người dùng
+  const dataUserNotFriend = document.querySelector("[data-users-not-friend]");
+  if (dataUserNotFriend) {
+    const userId = dataUserNotFriend.getAttribute("data-users-not-friend");
+    if (userId === data.friendId) {
+      const boxUserRemove = dataUserNotFriend.querySelector(
+        `[user-id="${data.infoUser._id}"]`
+      );
+      if (boxUserRemove) {
+        dataUserNotFriend.removeChild(boxUserRemove);
+      }
+    }
+  }
+});
 
 // End SERVER_RETURN_INFO_ACCEPT_FRIEND
 

@@ -1,0 +1,23 @@
+extends ../../layouts/defaults.pug
+include ../../mixins/box-head.pug
+
+block content
+  .container.my-3
+    include ../../partials/list-btn-users.pug
+    +box-head("Lời mời đã gửi")
+
+    .row  
+      each user in users
+        .col-4
+          div(class="box-user add")
+            div(class="inner-avatar")
+              img(src=user.avatar ? user.avatar : "/images/avatar.png", alt=user.fullName)
+              i(class="fa-solid fa-circle icon-status-online" status=user.statusOnline)
+            div(class="inner-info")
+              div(class="inner-name") #{user.fullName}
+              div(class="inner-button")
+                a(href="#" class="btn btn-sm btn-primary me-1") Nhắn tin 
+
+
+block script 
+  script(src="/js/users.js")

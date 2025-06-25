@@ -7,9 +7,9 @@ block content
     include ../../partials/list-btn-users.pug
     +box-head("Danh sách người dùng")
   
-    .row  
+    .row(data-users-not-friend=user.id) 
       each user in users
-        .col-4
+        .col-4(user-id=user.id)
           div(class="box-user")
             div(class="inner-avatar")
               img(src=user.avatar ? user.avatar : "/images/avatar.png" , alt=user.fullName)
