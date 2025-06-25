@@ -7,10 +7,10 @@ block content
     include ../../partials/list-btn-users.pug
     +box-head("Lời mời đã nhận")
   
-    .row(data-user-accept=user.id)
+    .row(data-users-accept=user.id)
       each user in users
         .col-4
-          div(class="box-user")
+          div(class="box-user" user-id=user.id)
             div(class="inner-avatar")
               img(src=user.avatar ? user.avatar : "/images/avatar.png" , alt=user.fullName)
             div(class="inner-info")

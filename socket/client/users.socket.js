@@ -52,6 +52,7 @@ module.exports = (res) => {
         lengthAcceptFriends: lengthAcceptFriends,
       });
 
+      //Lấy ra thông tin của A và trả về cho B
       const infoUser = await User.findOne({
         _id: userId,
       }).select("id avatar fullName");
@@ -106,6 +107,11 @@ module.exports = (res) => {
       socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
         friendId: friendId,
         lengthAcceptFriends: lengthAcceptFriends,
+      });
+
+      socket.broadcast.emit("SERVER_RETURN_USER_ID_CANCEL_FRIEND", {
+        friendId: friendId,
+        userId:userId,
       });
     });
 
