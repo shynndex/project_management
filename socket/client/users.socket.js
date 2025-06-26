@@ -111,7 +111,7 @@ module.exports = (res) => {
 
       socket.broadcast.emit("SERVER_RETURN_USER_ID_CANCEL_FRIEND", {
         friendId: friendId,
-        userId:userId,
+        userId: userId,
       });
     });
 
