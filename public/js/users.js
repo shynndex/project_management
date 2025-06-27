@@ -64,6 +64,21 @@ if (listBtnAcceptFriend.length > 0) {
 }
 // End accept
 
+// Delete Friend
+const listBtnDeleteFriend = document.querySelectorAll("[btn-delete-friend]");
+if (listBtnDeleteFriend.length > 0) {
+  listBtnDeleteFriend.forEach((button) => {
+    button.addEventListener("click", () => {
+      button.closest(".box-user").classList.add("deleted");
+
+      const userId = button.getAttribute("btn-delete-friend");
+
+      socket.emit("CLIENT_DELETE_FRIEND", userId);
+    });
+  });
+}
+// End Delete Friend
+
 // SERVER_RETURN_LENGTH_ACCEPT_FRIEND
 const badgeUsersAccept = document.querySelector("[badge-users-accept]");
 if (badgeUsersAccept) {
@@ -169,6 +184,8 @@ socket.on("SERVER_RETURN_USER_ID_CANCEL_FRIEND", (data) => {
 });
 // End SERVER_RETURN_USER_ID_CANCEL_FRIEND
 
+
+// SERVER_RETURN_USER_STATUS_ONLINE
 socket.on("SERVER_RETURN_USER_STATUS_ONLINE", (data) => {
   const dataUserFriend = document.querySelector("[data-users-friend]");
   if (dataUserFriend) {
@@ -178,3 +195,18 @@ socket.on("SERVER_RETURN_USER_STATUS_ONLINE", (data) => {
     }
   }
 });
+
+// End SERVER_RETURN_USER_STATUS_ONLINE
+
+
+// SERVER_RETURN_INFO_DELETED_FRIEND
+socket.on("SERVER_RETURN_INFO_DELETED_FRIEND", (data) => {
+  const dataUserFriend = document.querySelector("[data-users-friend]");
+  if (dataUserFriend) {
+    const boxUser = dataUserFriend.querySelector(`[user-id="${data.userId}"]`);
+    if (boxUser) {
+      dataUserFriend.removeChild(boxUser);
+    }
+  }
+});
+// End SERVER_RETURN_INFO_DELETED_FRIEND

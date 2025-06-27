@@ -851,6 +851,22 @@ body {
     display: inline-block;
 }
 
+.box-user .deleted-friend {
+    display: none;
+}
+
+.box-user.deleted [btn-send-message] {
+    display: none;
+}
+
+.box-user.deleted [btn-delete-friend] {
+    display: none;
+}
+
+.box-user.deleted .deleted-friend {
+    display: inline-block;
+}
+
 .box-user .icon-status-online {
   position: absolute;
   top: 45px;
