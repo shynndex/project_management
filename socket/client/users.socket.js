@@ -184,7 +184,7 @@ module.exports = (res) => {
         roomChat = new RoomChat(dataRoom);
         await roomChat.save();
       }
-
+      
       //Xóa id của A vào acceptFriend của B
       // Thêm {user_id, room_chat_id} của A vào friendsList của B
 

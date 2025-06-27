@@ -16,7 +16,7 @@ block content
             div(class="inner-info")
               div(class="inner-name") #{user.fullName}
               div(class="inner-button")
-                a(href="#" class="btn btn-sm btn-primary me-1" btn-send-message) Nhắn tin 
+                a(href=`/chat/${user.room_chat_id}` class="btn btn-sm btn-primary me-1" btn-send-message) Nhắn tin 
                 button(class="btn btn-sm btn-secondary me-1" btn-delete-friend=user.id) Hủy kết bạn
                 button(class="btn btn-sm btn-primary me-1 deleted-friend" btn-add-friend=user.id) Kết bạn
 
