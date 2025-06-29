@@ -1,0 +1,132 @@
+extends ../../layouts/defaults.pug
+include ../../mixins/box-head.pug
+
+block content
+    .container.my-4
+        .row.justify-content-center
+            .col-lg-8.col-md-10.col-12
+                +box-head("Tạo phòng chat mới")
+
+        .row.justify-content-center
+            .col-lg-8.col-md-10.col-12
+                .card.shadow-sm.border-0
+                    .card-header.bg-primary.text-white
+                        h5.mb-0.text-center
+                            i.fas.fa-comments.me-2
+                            | Thông tin phòng chat
+
+                    .card-body.p-4
+                        form#createRoomForm(action="/rooms-chat/create" method="POST")
+                            // Tên phòng
+                            .mb-4
+                                label.form-label.fw-bold(for="title")
+                                    i.fas.fa-tag.me-2.text-primary
+                                    | Tên phòng
+                                .input-group
+                                    span.input-group-text.bg-light
+                                        i.fas.fa-hashtag.text-muted
+                                    input#title.form-control(
+                                        type="text" 
+                                        name="title" 
+                                        placeholder="Nhập tên phòng chat..."
+                                        required
+                                    )
+
+                            // Thêm thành viên
+                            .mb-4
+                                label.form-label.fw-bold
+                                    i.fas.fa-users.me-2.text-primary
+                                    | Thêm thành viên
+
+                                .border.rounded.p-3.bg-light.mb-3
+                                    .row
+                                        .col-md-8.mb-2
+                                            .input-group
+                                                span.input-group-text.bg-white
+                                                    i.fas.fa-search.text-muted
+                                                input#memberSearch.form-control(
+                                                    type="text" 
+                                                    placeholder="Tìm kiếm thành viên..."
+                                                )
+                                        .col-md-4.mb-2
+                                            button.btn.btn-outline-primary.w-100(type="button" id="searchBtn")
+                                                i.fas.fa-search.me-1
+                                                | Tìm kiếm
+
+                                // Danh sách thành viên
+                                .member-list.mb-3
+                                    h6.mb-3.text-muted
+                                        i.fas.fa-list.me-2
+                                        | Danh sách thành viên
+
+                                    .row.g-2
+                                        each friend in friendList
+                                            .col-md-6
+                                                .form-check.p-3.border.rounded.hover-bg-light
+                                                    input.form-check-input(
+                                                        type="checkbox" 
+                                                        name="usersId" 
+                                                        id=`user-${friend.user_id}`
+                                                        value=friend.user_id
+                                                    )
+                                                    label.form-check-label.d-flex.align-items-center(for=`user-${friend.user_id}`)
+                                                        .avatar.me-3
+                                                            img.rounded-circle(
+                                                                src=friend.infoFriend.avatar || "/images/avatar.png"
+                                                                alt="Avatar"
+                                                                width="40"
+                                                                height="40"
+                                                            )
+                                                        div
+                                                            .fw-bold= friend.infoFriend.fullName
+
+                                // Thành viên đã chọn
+                                .selected-members.mt-3
+                                    h6.mb-2.text-muted
+                                        i.fas.fa-user-check.me-2
+                                        | Thành viên đã chọn 
+                                        span#selectedCount.badge.bg-primary.ms-1 0
+                                    #selectedMembersList.d-flex.flex-wrap.gap-2
+
+                            // Nút hành động
+                            .d-flex.justify-content-between.pt-3.border-top
+                                a.btn.btn-outline-secondary(href="/rooms-chat")
+                                    i.fas.fa-arrow-left.me-2
+                                    | Quay lại
+
+                                button.btn.btn-primary.px-4(type="submit")
+                                    i.fas.fa-plus.me-2
+                                    | Tạo phòng
+
+    // Custom CSS cho trang
+    style.
+        .hover-bg-light:hover {
+            background-color: #f8f9fa !important;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked + .form-check-label {
+            color: #0d6efd;
+        }
+
+        .selected-member-badge {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+        }
+
+        .avatar img {
+            object-fit: cover;
+            border: 2px solid #e9ecef;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+        }
+
+block script
+    script(src="/js/createRoom.js")

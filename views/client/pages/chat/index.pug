@@ -5,7 +5,7 @@ block content
   .container.my-3
   
     include ../../partials/list-btn-users.pug
-    +box-head("Chat")
+    +box-head(roomName.title || "Chat")
     .row
       .col-12
           .chat(my-id=user.id)
