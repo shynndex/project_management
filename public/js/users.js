@@ -184,7 +184,6 @@ socket.on("SERVER_RETURN_USER_ID_CANCEL_FRIEND", (data) => {
 });
 // End SERVER_RETURN_USER_ID_CANCEL_FRIEND
 
-
 // SERVER_RETURN_USER_STATUS_ONLINE
 socket.on("SERVER_RETURN_USER_STATUS_ONLINE", (data) => {
   const dataUserFriend = document.querySelector("[data-users-friend]");
@@ -198,7 +197,6 @@ socket.on("SERVER_RETURN_USER_STATUS_ONLINE", (data) => {
 
 // End SERVER_RETURN_USER_STATUS_ONLINE
 
-
 // SERVER_RETURN_INFO_DELETED_FRIEND
 socket.on("SERVER_RETURN_INFO_DELETED_FRIEND", (data) => {
   const dataUserFriend = document.querySelector("[data-users-friend]");
@@ -210,3 +208,39 @@ socket.on("SERVER_RETURN_INFO_DELETED_FRIEND", (data) => {
   }
 });
 // End SERVER_RETURN_INFO_DELETED_FRIEND
+
+let offlineTimeOut = {};
+socket.on("SERVER_RETURN_USER_STATUS_ONLINE_CHAT", (data) => {
+  const dataUsersFriend = document.querySelector("[data-users-friend]");
+  if (dataUsersFriend) {
+    const friendBox = dataUsersFriend.querySelector(
+      `[user-id="${data.userId}"]`
+    );
+    if (friendBox) {
+      const innerAvatar = friendBox.querySelector(".inner-avatar");
+      if (data.status == "online") {
+        if (offlineTimeOut[data.userId]) {
+          clearTimeout(offlineTimeOut[data.userId]);
+          delete offlineTimeOut[data.userId];
+        }
+        const statusIcon = innerAvatar.querySelector(".icon-status-online");
+        if (!statusIcon) {
+          const iconStatusDiv = document.createElement("i");
+          iconStatusDiv.className = "fa-solid fa-circle icon-status-online";
+          iconStatusDiv.setAttribute("status", data.status);
+          innerAvatar.appendChild(iconStatusDiv);
+        }
+      } else {
+        if (offlineTimeOut[data.userId]) {
+          clearTimeout(offlineTimeOut[data.userId]);
+        }
+        const statusIcon = innerAvatar.querySelector(".icon-status-online");
+        if (statusIcon) {
+          offlineTimeOut[data.userId] = setTimeout(() => {
+            statusIcon.remove();
+          }, 3000);
+        }
+      }
+    }
+  }
+});

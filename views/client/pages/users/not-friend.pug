@@ -5,7 +5,7 @@ block content
   .container.my-3
   
     include ../../partials/list-btn-users.pug
-    +box-head("Danh sách người dùng")
+    +box-head("Khám phá bạn mới")
   
     .row(data-users-not-friend=user.id) 
       each user in users
@@ -16,8 +16,11 @@ block content
             div(class="inner-info")
               div(class="inner-name") #{user.fullName}
               div(class="inner-button")
-                button(class="btn btn-sm btn-primary me-1" btn-add-friend=user.id) Kết bạn
-                button(class="btn btn-sm btn-secondary me-1" btn-cancel-friend=user.id) Hủy
+                if(user.isFriend)
+                  a(href=`/chat/${user.room_chat_id}` class="btn btn-sm btn-primary me-1" btn-send-message) Nhắn tin 
+                  button(class="btn btn-sm btn-secondary me-1" btn-delete-friend=user.id) Hủy kết bạn
+                else
+                  button(class="btn btn-sm btn-primary me-1" btn-add-friend=user.id) Kết bạn
 
 block script 
   script(src="/js/users.js") 

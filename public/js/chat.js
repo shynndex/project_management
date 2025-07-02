@@ -224,3 +224,53 @@ const bodyChatPreviewImage = document.querySelector(".chat .inner-body");
 fullImagePreview(bodyChatPreviewImage);
 
 //End Full Image
+
+// SERVER_RETURN_USER_STATUS_ONLINE_CHAT
+let offlineTimeOut = {};
+socket.on("SERVER_RETURN_USER_STATUS_ONLINE_CHAT", (data) => {
+  const chatBox = document.querySelector(".chat");
+  if (chatBox) {
+    const userAvatarChat = chatBox.querySelector(".inner-avatar");
+    const userInfoChat = chatBox.querySelector(".inner-info");
+    if (data.status == "online") {
+      //Add icon status realtime
+      if (offlineTimeOut[data.userId]) {
+        clearTimeout(offlineTimeOut[data.userId]);
+        delete offlineTimeOut[data.userId];
+      }
+
+      const statusIcon = userAvatarChat.querySelector(".icon-status-online");
+      if (!statusIcon) {
+        const statusIconDiv = document.createElement("i");
+        statusIconDiv.className = "fa-solid fa-circle icon-status-online";
+        statusIconDiv.setAttribute("status", data.status);
+        userAvatarChat.appendChild(statusIconDiv);
+      }
+
+      //Add status realtime
+      const userStatus = userInfoChat.querySelector(".inner-status");
+      if (!userStatus) {
+        const userStatusDiv = document.createElement("div");
+        userStatusDiv.classList.add("inner-status");
+        userStatusDiv.innerText = "Đang hoạt động";
+        userInfoChat.appendChild(userStatusDiv);
+      }
+    } else {
+      if (offlineTimeOut[data.userId]) {
+        clearTimeout(offlineTimeOut[data.userId]);
+      }
+
+      const iconOnline = userAvatarChat.querySelector(".icon-status-online");
+      const statusOnline = userInfoChat.querySelector(".inner-status");
+      if (iconOnline && statusOnline) {
+        offlineTimeOut[data.userId] = setTimeout(() => {
+          iconOnline.remove();
+          statusOnline.remove();
+          delete offlineTimeOut[data.userId];
+        }, 2000);
+      }
+    }
+  }
+});
+
+// End SERVER_RETURN_USER_STATUS_ONLINE_CHAT

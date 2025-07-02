@@ -35,7 +35,13 @@ module.exports.notFriend = async (req, res) => {
     ],
     status: "active",
     deleted: false,
-  }).select("id fullName avatar");
+  }).select("id fullName avatar friendList");
+
+
+  users.forEach((user) => {
+    const isFriend = friendListId.includes(user.id);
+    user.isFriend = isFriend;
+  });
 
   res.render("client/pages/users/not-friend", {
     title: "Danh sách người dùng",

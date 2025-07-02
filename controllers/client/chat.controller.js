@@ -2,11 +2,11 @@ const Chat = require("../../models/chat.model");
 const User = require("../../models/user.model");
 const RoomChat = require("../../models/rooms-chat.model");
 
-
 const chatSocket = require("../../socket/client/chat.socket");
 //[GET] /chat/:roomChatId
 module.exports.index = async (req, res) => {
   const roomChatId = req.params.roomChatId;
+  const friendList = res.locals.user.friendList;
   // SocketIO
   chatSocket(req, res);
   // End SocketIO
@@ -25,14 +25,25 @@ module.exports.index = async (req, res) => {
       chat.infoUser = infoUser;
     }
 
+    const friend = friendList.find(
+      (friend) => friend.room_chat_id == roomChatId
+    );
+    if (friend) {
+      const friendInfo = await User.findOne({
+        _id: friend.user_id,
+      }).select("fullName avatar statusOnline");
+
+      chats.friendInfo = friendInfo;
+    } 
+
     const roomName = await RoomChat.findOne({
-      _id:roomChatId,
+      _id: roomChatId,
     }).select("title");
 
     res.render("client/pages/chat/index", {
       title: "Chat",
       chats: chats,
-      roomName:roomName,
+      roomName: roomName,
     });
   } catch (error) {
     console.error("Lỗi lấy danh sách chat:", error);

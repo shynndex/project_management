@@ -3,15 +3,18 @@ include ../../mixins/box-head.pug
 
 block content
   .container.my-3
-  
-    include ../../partials/list-btn-users.pug
-    +box-head(roomName.title || "Chat")
     .row
       .col-12
           .chat(my-id=user.id)
             .inner-head
-              //- .inner-avatar EY
-              //- .inner-name Em Yêu
+              .inner-avatar 
+                img(src=chats.friendInfo.avatar || "/images/avatar.png")
+                i(class="fa-solid fa-circle icon-status-online" status=chats.friendInfo.statusOnline)
+
+              .inner-info
+                .inner-name #{chats.friendInfo.fullName}
+                if (chats.friendInfo.statusOnline == "online")
+                  .inner-status Đang hoạt động
 
             .inner-body
               each chat in chats
@@ -47,3 +50,4 @@ block content
 
 block script 
   script(type="module" src="/js/chat.js")
+  script(src="/js/users.js") 
