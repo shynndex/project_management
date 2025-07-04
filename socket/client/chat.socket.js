@@ -30,6 +30,7 @@ module.exports = (req, res) => {
           fullName: fullName,
           content: data.content,
           images: images,
+          chatId:chat.id,
         });
       } catch (error) {
         // Gửi lỗi về client hoặc log lỗi
@@ -49,5 +50,25 @@ module.exports = (req, res) => {
       });
     });
     // End Typing
+
+    // CLIENT_SEND_DELETE_MESSAGE
+    socket.on("CLIENT_SEND_DELETE_MESSAGE", async (data) => {
+      await Chat.updateOne(
+        {
+          room_chat_id: roomChatId,
+          user_id: userId,
+          _id: data.chatId,
+        },
+        {
+          content: "Deleted message",
+          deleted: true,
+        }
+      );
+        _io.to(roomChatId).emit("SERVER_SEND_DELETE_MESSAGE", {
+          chatId:data.chatId,
+          userId:userId,
+        });
+    });
+    // End CLIENT_SEND_DELETE_MESSAGE
   });
 };

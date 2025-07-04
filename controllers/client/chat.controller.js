@@ -15,7 +15,7 @@ module.exports.index = async (req, res) => {
   try {
     const chats = await Chat.find({
       room_chat_id: roomChatId,
-      deleted: false,
+      // deleted: false,
     });
 
     for (const chat of chats) {

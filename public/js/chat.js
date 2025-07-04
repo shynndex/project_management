@@ -42,16 +42,33 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
   let htmlFullname = "";
   let htmlContent = "";
   let htmlImage = "";
+  let htmlDropdown = "";
 
   if (myId == data.userId) {
+    htmlDropdown = `
+    <button class="inner-dot dropdown-toggle" data-bs-display="dynamic" data-bs-toggle="dropdown" aria-expanded="false" style="background:none; border:none;">
+      <i class="fa-solid fa-ellipsis-vertical fa-lg" style="color:rgba(63, 60, 60, 0.45);"></i>
+    </button>
+    <ul class="dropdown-menu">
+      <li class="dropdown-item" edit-message>Chỉnh sửa</li>
+      <li class="dropdown-item" delete-message>Gỡ</li>
+    </ul>
+  `;
     div.classList.add("inner-outgoing");
+    div.setAttribute("chat-id",data.chatId);
   } else {
     htmlFullname = `<div class="inner-name">${data.fullName}</div> `;
     div.classList.add("inner-incoming");
+    div.setAttribute("chat-id",data.chatId);
+
   }
 
   if (data.content) {
-    htmlContent = `<div class="inner-content">${data.content}</div>`;
+    htmlContent = `
+    <div class="message-row">
+    ${htmlDropdown}
+    <div class="inner-content">${data.content}</div>
+    `;
   }
 
   if (data.images.length > 0) {
@@ -69,6 +86,15 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
   `;
 
   body.insertBefore(div, boxTyping);
+  const deleteButtons = div.querySelectorAll("[delete-message]");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const messageDiv = button.closest("div[chat-id]");
+      const chatId = messageDiv.getAttribute("chat-id");
+      socket.emit("CLIENT_SEND_DELETE_MESSAGE", { chatId: chatId });
+    });
+  });
+
   body.scrollTop = body.scrollHeight;
   setTimeout(() => {
     body.scrollTop = body.scrollHeight;
@@ -274,3 +300,42 @@ socket.on("SERVER_RETURN_USER_STATUS_ONLINE_CHAT", (data) => {
 });
 
 // End SERVER_RETURN_USER_STATUS_ONLINE_CHAT
+
+//Delete message
+const chatBox = document.querySelector(".chat");
+if (chatBox) {
+  const deleteButton = chatBox.querySelectorAll("[delete-message]");
+  deleteButton.forEach((button) => {
+    button.addEventListener("click", () => {
+      const messageDiv = button.closest("div[chat-id]");
+      const chatId = messageDiv.getAttribute("chat-id");
+
+      socket.emit("CLIENT_SEND_DELETE_MESSAGE", {
+        chatId: chatId,
+      });
+    });
+  });
+}
+//End Delete message
+
+// SERVER_SEND_DELETE_MESSAGE
+socket.on("SERVER_SEND_DELETE_MESSAGE", (data) => {
+  const chatBox = document.querySelector(".chat");
+  const myId = chatBox.getAttribute("my-id");
+
+  const chatDiv = document.querySelector(`[chat-id="${data.chatId}"]`);
+  if (chatDiv) {
+    const dropdownDot = chatDiv.querySelector(".message-row .inner-dot");
+    const chatContent = chatDiv.querySelector(".inner-content");
+    if (myId == data.userId) {
+      chatContent.textContent = "Bạn đã thu hồi tin nhắn";
+      chatContent.className = "inner-content-deleted-outgoing";
+      dropdownDot.remove();
+    } else {
+      chatContent.textContent = "Đã thu hồi tin nhắn";
+      chatContent.className = "inner-content-deleted-incoming";
+      dropdownDot.remove();
+    }
+  }
+});
+// End SERVER_SEND_DELETE_MESSAGE

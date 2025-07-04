@@ -462,6 +462,22 @@ body {
     margin-bottom: 12px;
 }
 
+.message-row {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+
+.message-row .inner-dot {
+    opacity: 0;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.inner-dot.dropdown-toggle::after {
+    display: none !important;
+}
+
 .chat .inner-incoming,
 .inner-outgoing {
     margin-bottom: 16px;
@@ -481,7 +497,7 @@ body {
     color: #222;
     padding: 10px 18px;
     border-radius: 12px;
-    max-width: 70%;
+    /* max-width: 70%; */
     width: fit-content;
     margin-bottom: 3px;
     font-size: 15px;
@@ -498,12 +514,47 @@ body {
     color: #fff;
     padding: 10px 18px;
     border-radius: 16px;
-    max-width: 70%;
     width: fit-content;
     font-size: 15px;
     margin-bottom: 3px;
     /* Bong bóng bên phải */
     border-top-right-radius: 4px;
+}
+
+.chat .inner-outgoing:hover .inner-dot {
+    opacity: 1;
+}
+
+.chat .inner-body .inner-content-deleted-outgoing{
+    background: transparent;
+    color: gray;
+    padding: 10px 18px;
+    border-radius: 16px;
+    width: fit-content;
+    font-size: 15px;
+    margin-bottom: 3px;
+    /* Bong bóng bên phải */
+    border-top-right-radius: 4px;
+    border:1px solid gray ;
+}
+
+.chat .inner-body .inner-content-deleted-incoming{
+    background: transparent;
+    color: gray;
+    padding: 10px 18px;
+    border-radius: 12px;
+    /* max-width: 70%; */
+    width: fit-content;
+    margin-bottom: 3px;
+    font-size: 15px;
+    /* Bong bóng bên trái */
+    border-top-left-radius: 4px;
+    border:1px solid gray ;
+
+}
+
+.dropdown-item{
+    cursor: pointer;
 }
 
 .inner-foot {
